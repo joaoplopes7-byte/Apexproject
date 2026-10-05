@@ -1,26 +1,38 @@
-{
-  "nome": "Aragorn",
-  "classe": "Guerreiro",
-  "level": 1,
-  "missao_atual": {
-    "nome": "Derrotar o Dragão de Fogo",
-    "concluida": false,
-    "recompensa_extra": null
-  },
-  "mochila": {
-    "moedas_ouro": 50,
-    "itens": [
-      "poção",
-      "mapa",
-      "tocha"
-    ]
-  },
-  "montaria": {
-    "especie": "Dragão Vermelho",
-    "velocidade": 85,
-    "status_voo": {
-      "pode_voar": true,
-      "stamina_maxima": 100
+[
+  {
+    "nome": "Aragorn",
+    "classe": "Guerreiro",
+    "level": 1,
+    "missao_atual": {
+      "nome": "Derrotar o Dragão de Fogo",
+      "concluida": false,
+      "recompensa_extra": null
+    },
+    "mochila": {
+      "moedas_ouro": 50,
+      "itens": [
+        "poção",
+        "mapa",
+        "tocha"
+      ]
+    },
+    "montaria": {
+      "especie": "Dragão Vermelho",
+      "velocidade": 85,
+      "status_voo": {
+        "pode_voar": true,
+        "stamina_maxima": 100
+      }
     }
-  }
-}
+  },
+  [
+    {
+      "nome": "Espada de Ferro",
+      "preco": 150
+    },
+    {
+      "nome": "Poção de Cura",
+      "preco": 25
+    }
+  ]
+]
