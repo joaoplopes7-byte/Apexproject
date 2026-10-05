@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apex Luxury Dynamics - Virtual Showroom</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Sketchfab Viewer API JS -->
+    <script src="https://static.sketchfab.com/api/sketchfab-viewer-1.12.1.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gold: { DEFAULT: '#D4AF37', light: '#F3E5AB', dark: '#AA7C11' },
+                        obsidian: '#0B0C10',
+                        charcoal: '#1F2833'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #070709; color: #EAEAEA; }
+        .font-cinzel { font-family: 'Cinzel', serif; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #000; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #D4AF37; }
+        
+        /* Presets de iluminação de fundo */
+        .preset-neon { background: radial-gradient(circle, rgba(212,175,55,0.15) 0%, rgba(0,0,0,1) 70%); }
+        .preset-sunset { background: radial-gradient(circle, rgba(255,99,71,0.15) 0%, rgba(10,5,0,1) 70%); }
+        .preset-garage { background: radial-gradient(circle, rgba(50,50,50,0.3) 0%, rgba(5,5,5,1) 70%); }
+        .preset-daylight { background: radial-gradient(circle, rgba(200,220,255,0.2) 0%, rgba(10,10,15,1) 70%); }
+    </style>
+</head>
+<body class="antialiased text-gray-200 bg-black selection:bg-gold selection:text-black">
+
+    <!-- NAVBAR -->
+    <nav class="fixed top-0 left-0 w-full z-50 bg-black/85 backdrop-blur-md border-b border-gold/20 px-6 py-4 flex justify-between items-center">
+        <div class="flex items-center space-x-3">
+            <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-gold-dark via-gold to-gold-light p-[1px]">
+                <div class="w-full h-full bg-black rounded-full flex items-center justify-center">
+                    <span class="font-cinzel font-bold text-gold text-xs">A</span>
+                </div>
+            </div>
+            <span class="font-cinzel font-bold text-lg tracking-widest text-white">APEX <span class="text-gold">LUXURY</span></span>
+        </div>
+        <div class="hidden lg:flex space-x-6 text-xs uppercase tracking-widest text-gray-400 font-medium">
+            <a href="#customizer" class="text-gold hover:text-gold-light transition">Estúdio 3D Bespoke</a>
+            <a href="#matrix" class="hover:text-gold transition">Matriz Comparativa</a>
+            <a href="#calculator" class="hover:text-gold transition">Financiamento VIP</a>
+            <a href="#showroom" class="hover:text-gold transition">Catálogo</a>
+            <a href="#dealership" class="hover:text-gold transition">Av. Europa 850</a>
+        </div>
+        <div class="flex items-center gap-3">
+            <button onclick="openAuthModal()" class="px-4 py-2 bg-gray-900 border border-gold/40 text-gold text-xs font-semibold rounded-full hover:bg-gold hover:text-black transition flex items-center gap-2">
+                <i data-lucide="user" class="w-3.5 h-3.5"></i> <span id="user-btn-text">Minha Conta</span>
+            </button>
+            <button onclick="toggleChat()" class="px-4 py-2 border border-gold/50 text-gold text-xs font-semibold rounded-full hover:bg-gold hover:text-black transition flex items-center gap-2">
+                <i data-lucide="bot" class="w-4 h-4"></i> Concierge IA
+            </button>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section class="relative h-screen flex items-center justify-center overflow-hidden">
+        <img src="https://images.unsplash.com/photo-1544829099-b9a0c07fad1a?auto=format&fit=crop&w=1920&q=80" class="absolute inset-0 w-full h-full object-cover opacity-35 filter brightness-75">
+        <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
+        <div class="relative z-10 text-center px-4 max-w-4xl">
+            <span class="text-gold font-cinzel text-xs md:text-sm tracking-[0.3em] uppercase block mb-3">Concessionária Exclusiva • Av. Europa 850, SP</span>
+            <h1 class="text-4xl md:text-7xl font-cinzel font-bold text-white tracking-wider mb-6">APEX LUXURY <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-gold-light via-gold to-gold-dark">DYNAMICS</span></h1>
+            <p class="text-gray-400 text-sm md:text-base max-w-2xl mx-auto mb-8 font-light">
+                Configure tintas na lataria, estofamento, pinças de freio e simule o som real do motor em tempo real.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="#customizer" class="px-8 py-3.5 bg-gradient-to-r from-gold-dark via-gold to-gold-light text-black font-bold rounded-full hover:brightness-110 transition shadow-lg shadow-gold/20 text-xs tracking-wider uppercase flex items-center justify-center gap-2">
+                    <i data-lucide="palette" class="w-4 h-4"></i> Abrir Estúdio 3D
+                </a>
+                <a href="#dealership" class="px-8 py-3.5 border border-gray-700 text-gray-300 font-semibold rounded-full hover:border-gold hover:text-gold transition text-xs tracking-wider uppercase flex items-center justify-center gap-2">
+                    <i data-lucide="map-pin" class="w-4 h-4 text-gold"></i> Showroom Jardins SP
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ESTÚDIO CUSTOMIZADOR 3D COMPLETO -->
+    <section id="customizer" class="py-20 bg-stone-950 border-y border-gray-800 px-4 md:px-8">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-8">
+                <span class="text-gold font-cinzel text-xs tracking-[0.25em] uppercase block mb-1">Real-Time Bespoke Customizer</span>
+                <h2 id="car-title-display" class="text-3xl md:text-4xl font-cinzel font-bold text-white">FERRARI PUROSANGUE 2023</h2>
+                <p class="text-gray-400 text-xs mt-2">Navegue pelas setas laterais para trocar de hipercarro no estúdio 3D</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+                <!-- VIEWPORT 3D -->
+                <div id="viewport-bg" class="lg:col-span-2 bg-black rounded-2xl border border-gold/30 overflow-hidden relative shadow-2xl h-[580px] preset-neon transition-all duration-500">
+                    <iframe id="api-frame" class="w-full h-full border-0 z-10 relative" allow="autoplay; fullscreen; xr-spatial-tracking" execution-while-out-of-viewport execution-while-not-rendered web-share></iframe>
+                    
+                    <!-- Overlay de Farol (Headlights) -->
+                    <div id="headlight-overlay" class="absolute inset-0 bg-gradient-to-t from-transparent via-yellow-100/5 to-white/10 pointer-events-none opacity-0 transition-opacity duration-300 z-20"></div>
+
+                    <!-- Overlay Carregamento -->
+                    <div id="loading-overlay" class="absolute inset-0 bg-black/90 flex flex-col items-center justify-center text-gold z-30 transition-opacity duration-500">
+                        <i data-lucide="loader-2" class="w-10 h-10 animate-spin mb-3"></i>
+                        <p id="loading-text" class="font-cinzel text-sm tracking-widest">Carregando Modelo 3D...</p>
+                    </div>
+
+                    <!-- Botão Seta Esquerda -->
+                    <button onclick="prevCar()" class="absolute left-4 top-1/2 -translate-y-1/2 z-20 bg-black/70 hover:bg-gold hover:text-black text-white border border-gold/40 p-3 rounded-full transition shadow-lg backdrop-blur-md">
+                        <i data-lucide="chevron-left" class="w-6 h-6"></i>
+                    </button>
+
+                    <!-- Botão Seta Direita -->
+                    <button onclick="nextCar()" class="absolute right-4 top-1/2 -translate-y-1/2 z-20 bg-black/70 hover:bg-gold hover:text-black text-white border border-gold/40 p-3 rounded-full transition shadow-lg backdrop-blur-md">
+                        <i data-lucide="chevron-right" class="w-6 h-6"></i>
+                    </button>
+
+                    <!-- Ferramentas Rápidas Flutuantes no Viewport -->
+                    <div class="absolute bottom-4 left-4 right-4 flex flex-wrap justify-between items-center gap-2 z-20 bg-black/80 backdrop-blur-md p-3 rounded-xl border border-gray-800 text-xs">
+                        <!-- Ronco do Motor -->
+                        <button onclick="playEngineSound()" class="px-3 py-1.5 bg-red-900/60 hover:bg-red-700 text-white rounded-lg border border-red-500/50 transition flex items-center gap-2">
+                            <i data-lucide="volume-2" class="w-4 h-4 text-red-400"></i> Ouvir Ronco Motor
+                        </button>
+
+                        <!-- Faróis -->
+                        <button onclick="toggleHeadlights()" class="px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-gray-200 rounded-lg border border-gray-600 transition flex items-center gap-2">
+                            <i data-lucide="zap" class="w-4 h-4 text-yellow-400"></i> Faróis DRL: <span id="headlight-status">OFF</span>
+                        </button>
+
+                        <!-- Iluminação -->
+                        <div class="flex items-center gap-1.5">
+                            <span class="text-gray-400 text-[10px] uppercase">Luz:</span>
+                            <button onclick="setStudioPreset('preset-neon')" class="w-5 h-5 rounded-full bg-gold border border-white/40" title="Neon Studio"></button>
+                            <button onclick="setStudioPreset('preset-sunset')" class="w-5 h-5 rounded-full bg-orange-600 border border-white/40" title="Pôr do Sol"></button>
+                            <button onclick="setStudioPreset('preset-garage')" class="w-5 h-5 rounded-full bg-gray-700 border border-white/40" title="Garagem Subterrânea"></button>
+                            <button onclick="setStudioPreset('preset-daylight')" class="w-5 h-5 rounded-full bg-blue-200 border border-white/40" title="High-Key Daylight"></button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PAINEL DE PACOTES E CUSTOMIZAÇÃO -->
+                <div class="bg-gray-900/90 p-6 rounded-2xl border border-gray-800 space-y-5 max-h-[580px] overflow-y-auto">
+                    <!-- 1. Pintura Lataria -->
+                    <div>
+                        <h3 class="font-cinzel text-xs text-white font-bold border-b border-gray-800 pb-1.5 flex justify-between">
+                            <span>1. Pintura de Lataria</span>
+                            <span class="text-gold">Satin / Metal</span>
+                        </h3>
+                        <div class="grid grid-cols-2 gap-2 mt-2">
+                            <button onclick="applyColor('#8B0000', 'Rosso Corsa', 0)" class="p-2 bg-gray-800 hover:bg-gray-700 border border-gray-700 rounded-lg text-left transition flex items-center gap-2">
+                                <span class="w-3.5 h-3.5 rounded-full bg-red-700 shrink-0"></span>
+                                <span class="text-xs text-white">Rosso Corsa</span>
+                            </button>
+                            <button onclick="applyColor('#09090B', 'Nero Daytona', 35000)" class="p-2 bg-gray-800 hover:bg-gray-700 border border-gray-700 rounded-lg text-left transition flex items-center gap-2">
+                                <span class="w-3.5 h-3.5 rounded-full bg-black border border-gray-500 shrink-0"></span>
+                                <span class="text-xs text-white">Nero Daytona</span>
+                            </button>
+                            <button onclick="applyColor('#E6C200', 'Giallo Modena', 40000)" class="p-2 bg-gray-800 hover:bg-gray-700 border border-gray-700 rounded-lg text-left transition flex items-center gap-2">
+                                <span class="w-3.5 h-3.5 rounded-full bg-yellow-400 shrink-0"></span>
+                                <span class="text-xs text-white">Giallo Modena</span>
+                            </button>
+                            <button onclick="applyColor('#D4AF37', 'Oro Leggero 24k', 95000)" class="p-2 bg-gray-800 hover:bg-gray-700 border border-gold/40 rounded-lg text-left transition flex items-center gap-2">
+                                <span class="w-3.5 h-3.5 rounded-full bg-gold shrink-0"></span>
+                                <span class="text-xs text-white">Oro 24k</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 2. Revestimento dos Bancos & Cor -->
+                    <div>
+                        <h3 class="font-cinzel text-xs text-white font-bold border-b border-gray-800 pb-1.5">2. Estofamento do Interior</h3>
+                        <div class="grid grid-cols-3 gap-1.5 mt-2">
+                            <button onclick="applySeatMaterial('Couro Cuoio', 0)" class="p-2 bg-gray-800 border border-gray-700 rounded-lg text-center hover:border-gold transition">
+                                <div class="text-[11px] text-white font-medium">Couro Natural</div>
+                                <div class="text-[9px] text-gray-400">Cuoio VIP</div>
+                            </button>
+                            <button onclick="applySeatMaterial('Sintético Alcantara', 22000)" class="p-2 bg-gray-800 border border-gray-700 rounded-lg text-center hover:border-gold transition">
+                                <div class="text-[11px] text-white font-medium">Alcantara</div>
+                                <div class="text-[9px] text-gray-400">Sintético Race</div>
+                            </button>
+                            <button onclick="applySeatMaterial('Poliéster Tech', 15000)" class="p-2 bg-gray-800 border border-gray-700 rounded-lg text-center hover:border-gold transition">
+                                <div class="text-[11px] text-white font-medium">Poliéster</div>
+                                <div class="text-[9px] text-gray-400">Tech Mesh</div>
+                            </button>
+                        </div>
+                        <div class="flex gap-2 mt-2">
+                            <button onclick="applySeatColor('#1A1A1A', 'Preto Nero')" class="w-6 h-6 rounded-full bg-black border border-gray-600" title="Preto"></button>
+                            <button onclick="applySeatColor('#8B0000', 'Vermelho Rosso')" class="w-6 h-6 rounded-full bg-red-800 border border-gray-600" title="Vermelho"></button>
+                            <button onclick="applySeatColor('#C29B38', 'Caramelo Cuoio')" class="w-6 h-6 rounded-full bg-yellow-700 border border-gray-600" title="Caramelo"></button>
+                            <button onclick="applySeatColor('#E5E5E5', 'Branco Ghiaccio')" class="w-6 h-6 rounded-full bg-gray-200 border border-gray-600" title="Branco"></button>
+                        </div>
+                    </div>
+
+                    <!-- 3. Insulfilm & Pinça de Freio -->
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <h3 class="font-cinzel text-[11px] text-white font-bold border-b border-gray-800 pb-1">Insulfilm</h3>
+                            <select onchange="applyWindowTint(parseFloat(this.value), this.options[this.selectedIndex].text)" class="w-full mt-2 bg-gray-800 text-xs text-white p-2 rounded-lg border border-gray-700 outline-none">
+                                <option value="1.0">Sem Insulfilm</option>
+                                <option value="0.5">G70 Light (+R$ 3.500)</option>
+                                <option value="0.2">G20 Executivo (+R$ 5.000)</option>
+                                <option value="0.03">G5 Dark (+R$ 7.500)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <h3 class="font-cinzel text-[11px] text-white font-bold border-b border-gray-800 pb-1">Pinça Brembo</h3>
+                            <select onchange="applyCaliperColor(this.value, this.options[this.selectedIndex].text)" class="w-full mt-2 bg-gray-800 text-xs text-white p-2 rounded-lg border border-gray-700 outline-none">
+                                <option value="#FF0000">Vermelho Brembo</option>
+                                <option value="#FFCC00">Amarelo Carbono</option>
+                                <option value="#0066FF">Azul Bugatti</option>
+                                <option value="#33FF33">Verde Acid</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Resumo de Preço e Botão de Proposta -->
+                    <div class="pt-3 border-t border-gray-800 space-y-2">
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs text-gray-400">Valor Configurado:</span>
+                            <span id="total-price-display" class="text-xl font-bold text-gold">R$ 7.500.000</span>
+                        </div>
+                        <button onclick="generateProFormaPDF()" class="w-full py-3 bg-gradient-to-r from-gold-dark via-gold to-gold-light text-black font-bold rounded-xl hover:brightness-110 transition text-xs uppercase tracking-wider shadow-lg flex items-center justify-center gap-2">
+                            <i data-lucide="file-text" class="w-4 h-4"></i> Gerar Ficha Pro Forma (PDF)
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MATRIZ COMPARATIVA DE HIPERCARROS -->
+    <section id="matrix" class="py-20 px-6 max-w-7xl mx-auto border-b border-gray-800">
+        <div class="text-center mb-12">
+            <span class="text-gold font-cinzel text-xs tracking-[0.2em] uppercase">Engenharia Comparada</span>
+            <h2 class="text-3xl font-cinzel font-bold text-white mt-1">DESEMPENHO & ESPECIFICAÇÕES</h2>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs border-collapse">
+                <thead>
+                    <tr class="border-b border-gold/30 text-gold font-cinzel text-sm bg-gray-900/50">
+                        <th class="p-4">Modelo</th>
+                        <th class="p-4">Motorização</th>
+                        <th class="p-4">Potência</th>
+                        <th class="p-4">0 a 100 km/h</th>
+                        <th class="p-4">Vel. Máxima</th>
+                        <th class="p-4">Preço Base</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-800 text-gray-300">
+                    <tr class="hover:bg-gray-900/40">
+                        <td class="p-4 font-bold text-white">Ferrari Purosangue</td>
+                        <td class="p-4">6.5L V12 Aspirado</td>
+                        <td class="p-4 text-gold">725 CV</td>
+                        <td class="p-4">3.3 seg</td>
+                        <td class="p-4">310 km/h</td>
+                        <td class="p-4 font-bold">R$ 7.500.000</td>
+                    </tr>
+                    <tr class="hover:bg-gray-900/40">
+                        <td class="p-4 font-bold text-white">Bugatti Tourbillon</td>
+                        <td class="p-4">8.3L V16 Hybrid</td>
+                        <td class="p-4 text-gold">1800 CV</td>
+                        <td class="p-4">2.0 seg</td>
+                        <td class="p-4">445 km/h</td>
+                        <td class="p-4 font-bold">R$ 28.000.000</td>
+                    </tr>
+                    <tr class="hover:bg-gray-900/40">
+                        <td class="p-4 font-bold text-white">Audi R8 Coupé 2019</td>
+                        <td class="p-4">5.2L V10 FSI</td>
+                        <td class="p-4 text-gold">622 CV</td>
+                        <td class="p-4">3.1 seg</td>
+                        <td class="p-4">331 km/h</td>
+                        <td class="p-4 font-bold">R$ 1.650.000</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- CALCULADORA DE FINANCIAMENTO PRIVADO VIP -->
+    <section id="calculator" class="py-20 px-6 max-w-5xl mx-auto">
+        <div class="bg-gradient-to-b from-gray-900 to-black p-8 rounded-2xl border border-gold/30 shadow-2xl">
+            <div class="text-center mb-8">
+                <span class="text-gold font-cinzel text-xs tracking-[0.2em] uppercase">Simulador de Crédito Privado</span>
+                <h2 class="text-2xl font-cinzel font-bold text-white mt-1">FINANCIAMENTO VIP APEX</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+                <div class="space-y-4">
+                    <div>
+                        <label class="text-xs text-gray-400 block mb-1">Valor de Entrada (R$):</label>
+                        <input type="number" id="calc-downpayment" value="2500000" oninput="calculateFinance()" class="w-full bg-black border border-gray-700 p-2.5 rounded-lg text-xs text-white focus:border-gold outline-none">
+                    </div>
+                    <div>
+                        <label class="text-xs text-gray-400 block mb-1">Prazo de Parcelamento:</label>
+                        <select id="calc-months" onchange="calculateFinance()" class="w-full bg-black border border-gray-700 p-2.5 rounded-lg text-xs text-white focus:border-gold outline-none">
+                            <option value="12">12 Meses (Taxa 0.89% a.m.)</option>
+                            <option value="24" selected>24 Meses (Taxa 0.95% a.m.)</option>
+                            <option value="36">36 Meses (Taxa 0.99% a.m.)</option>
+                            <option value="48">48 Meses (Taxa 1.05% a.m.)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="p-6 bg-black/60 rounded-xl border border-gray-800 text-center space-y-3">
+                    <span class="text-xs text-gray-400 uppercase block">Valor Financiar:</span>
+                    <span id="calc-financed-amount" class="text-xl font-bold text-white block">R$ 5.000.000</span>
+                    <hr class="border-gray-800">
+                    <span class="text-xs text-gray-400 uppercase block">Parcela Mensal Estimada:</span>
+                    <span id="calc-monthly-payment" class="text-3xl font-bold text-gold block">R$ 234.200</span>
+                </div>
+
+                <div class="space-y-3">
+                    <p class="text-xs text-gray-400 leading-relaxed">
+                        Simulação pré-aprovada sujeita a análise de crédito private banking. Isenção de taxa de abertura de crédito para clientes cadastrados na Apex.
+                    </p>
+                    <button onclick="scheduleVisit()" class="w-full py-3 border border-gold text-gold font-bold rounded-xl hover:bg-gold hover:text-black transition text-xs uppercase tracking-wider">
+                        Solicitar Análise de Crédito
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SHOWROOM CATALOGO COM FOTOS FIÉIS -->
+    <section id="showroom" class="py-20 px-6 max-w-7xl mx-auto">
+        <div class="text-center mb-12">
+            <span class="text-gold font-cinzel text-xs tracking-[0.2em] uppercase">Frota Exclusiva</span>
+            <h2 class="text-3xl font-cinzel font-bold text-white mt-1">CATÁLOGO DE PRONTA ENTREGA</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- 1. Ferrari Purosangue -->
+            <div class="bg-gray-900 rounded-2xl overflow-hidden border border-gray-800 hover:border-gold/50 transition">
+                <img src="https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=800&q=80" class="w-full h-52 object-cover" alt="Ferrari Purosangue">
+                <div class="p-5">
+                    <h3 class="font-cinzel text-lg font-bold text-white">Ferrari Purosangue 2023</h3>
+                    <p class="text-gold font-bold text-sm mt-1">R$ 7.500.000</p>
+                    <button onclick="selectCarByIndex(0)" class="w-full mt-4 py-2 bg-gray-800 hover:bg-gold hover:text-black text-xs font-semibold rounded-lg transition">Carregar no 3D</button>
+                </div>
+            </div>
+
+            <!-- 2. Bugatti Tourbillon -->
+            <div class="bg-gray-900 rounded-2xl overflow-hidden border border-gray-800 hover:border-gold/50 transition">
+                <img src="https://images.unsplash.com/photo-1544829099-b9a0c07fad1a?auto=format&fit=crop&w=800&q=80" class="w-full h-52 object-cover" alt="Bugatti Tourbillon">
+                <div class="p-5">
+                    <h3 class="font-cinzel text-lg font-bold text-white">Bugatti Tourbillon 2026</h3>
+                    <p class="text-gold font-bold text-sm mt-1">R$ 28.000.000</p>
+                    <button onclick="selectCarByIndex(1)" class="w-full mt-4 py-2 bg-gray-800 hover:bg-gold hover:text-black text-xs font-semibold rounded-lg transition">Carregar no 3D</button>
+                </div>
+            </div>
+
+            <!-- 3. Audi R8 Coupé 2019 -->
+            <div class="bg-gray-900 rounded-2xl overflow-hidden border border-gray-800 hover:border-gold/50 transition">
+                <img src="https://images.unsplash.com/photo-1614200187524-dc4b892acf16?auto=format&fit=crop&w=800&q=80" class="w-full h-52 object-cover" alt="Audi R8 Coupé">
+                <div class="p-5">
+                    <h3 class="font-cinzel text-lg font-bold text-white">Audi R8 Coupé 2019</h3>
+                    <p class="text-gold font-bold text-sm mt-1">R$ 1.650.000</p>
+                    <button onclick="selectCarByIndex(2)" class="w-full mt-4 py-2 bg-gray-800 hover:bg-gold hover:text-black text-xs font-semibold rounded-lg transition">Carregar no 3D</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- LOJA FÍSICA NA AV. EUROPA -->
+    <section id="dealership" class="py-20 px-6 max-w-7xl mx-auto border-t border-gray-800">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <div>
+                <span class="text-gold font-cinzel text-xs tracking-[0.2em] uppercase">SÃO PAULO FLAGSHIP STORE</span>
+                <h2 class="text-3xl font-cinzel font-bold text-white mt-2 mb-4">SHOWROOM NA AV. EUROPA, 850</h2>
+                <p class="text-gray-400 text-sm leading-relaxed mb-6">
+                    Visite nossa concessionária física nos Jardins. Lounge VIP para clientes, estúdio de configuração em tela gigante e teste de rodagem privativo.
+                </p>
+                <div class="space-y-3 text-xs text-gray-300">
+                    <p class="flex items-center gap-2"><i data-lucide="map-pin" class="w-4 h-4 text-gold"></i> Av. Europa, 850 - Jardins, São Paulo - SP</p>
+                    <p class="flex items-center gap-2"><i data-lucide="phone" class="w-4 h-4 text-gold"></i> +55 (11) 3088-9000 | concierge@apexluxury.com.br</p>
+                </div>
+            </div>
+            <div class="rounded-2xl overflow-hidden border border-gray-800 h-80 relative">
+                <img src="https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover">
+            </div>
+        </div>
+    </section>
+
+    <!-- CHATBOT CONCIERGE IA FLUTUANTE COM PERGUNTAS E RESPOSTAS LIVRES -->
+    <div id="chat-widget" class="fixed bottom-6 right-6 z-50 w-80 md:w-96 bg-gray-900 border border-gold/40 rounded-2xl shadow-2xl hidden flex-col overflow-hidden">
+        <!-- Chat Header -->
+        <div class="bg-black p-3.5 border-b border-gray-800 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-full bg-gold/20 flex items-center justify-center text-gold border border-gold/40">
+                    <i data-lucide="bot" class="w-4 h-4"></i>
+                </div>
+                <div>
+                    <h4 class="text-xs font-bold text-white font-cinzel">CONCIERGE APEX IA</h4>
+                    <span class="text-[10px] text-green-400 flex items-center gap-1"><span class="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></span> Online para Perguntas</span>
+                </div>
+            </div>
+            <button onclick="toggleChat()" class="text-gray-400 hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
+        </div>
+
+        <!-- Chat Body -->
+        <div id="chat-messages" class="p-4 h-80 overflow-y-auto space-y-3 text-xs">
+            <div class="bg-gray-800/80 p-3 rounded-xl border border-gray-700/50 max-w-[85%] text-gray-200">
+                Olá! Sou o Concierge de IA da Apex Luxury. Pode me fazer **qualquer pergunta** sobre preços, modelos, visita à loja na Av. Europa ou financiamento!
+            </div>
+        </div>
+
+        <!-- Sugestões de Perguntas Rápidas (Q&A) -->
+        <div class="px-3 py-1.5 bg-gray-950 border-t border-gray-800 flex gap-1.5 overflow-x-auto text-[10px] whitespace-nowrap">
+            <button onclick="askQuickQuestion('Qual o valor da Ferrari Purosangue?')" class="px-2.5 py-1 bg-gray-800 text-gold hover:bg-gold hover:text-black rounded-full border border-gold/30 transition">Ferrari Purosangue</button>
+            <button onclick="askQuickQuestion('Onde fica a concessionária física?')" class="px-2.5 py-1 bg-gray-800 text-gold hover:bg-gold hover:text-black rounded-full border border-gold/30 transition">Endereço SP</button>
+            <button onclick="askQuickQuestion('Como funciona o financiamento?')" class="px-2.5 py-1 bg-gray-800 text-gold hover:bg-gold hover:text-black rounded-full border border-gold/30 transition">Financiamento</button>
+        </div>
+
+        <!-- Chat Input -->
+        <div class="p-3 bg-black border-t border-gray-800 flex gap-2">
+            <input type="text" id="chat-input" placeholder="Faça sua pergunta aqui..." onkeydown="if(event.key==='Enter') sendMessage()" class="w-full bg-gray-900 text-xs text-white px-3 py-2 rounded-lg border border-gray-800 focus:border-gold outline-none">
+            <button onclick="sendMessage()" class="bg-gold text-black px-3.5 py-2 rounded-lg font-bold hover:brightness-110 shrink-0"><i data-lucide="send" class="w-4 h-4"></i></button>
+        </div>
+    </div>
+
+    <!-- MODAL DE PRO FORMA PDF (FICHA TÉCNICA) -->
+    <div id="proforma-modal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden flex items-center justify-center p-4">
+        <div class="bg-gray-900 border border-gold/40 rounded-2xl max-w-2xl w-full p-6 text-white relative space-y-4">
+            <button onclick="closeProFormaModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+            
+            <div class="border-b border-gold/30 pb-3 flex justify-between items-center">
+                <div>
+                    <h3 class="font-cinzel text-lg font-bold text-gold">APEX LUXURY DYNAMICS</h3>
+                    <p class="text-[10px] text-gray-400">FICHA TÉCNICA DE CONFIGURAÇÃO BESPOKE</p>
+                </div>
+                <span class="text-xs text-gray-400 font-mono" id="pdf-date">PRO-2026-001</span>
+            </div>
+
+            <div id="proforma-content" class="space-y-3 text-xs text-gray-300">
+                <div class="flex justify-between border-b border-gray-800 pb-2">
+                    <span class="text-gray-400">Modelo Selecionado:</span>
+                    <span id="pdf-car-name" class="font-bold text-white">Ferrari Purosangue 2023</span>
+                </div>
+                <div class="flex justify-between border-b border-gray-800 pb-2">
+                    <span class="text-gray-400">Pintura de Lataria:</span>
+                    <span id="pdf-paint" class="text-white">Rosso Corsa</span>
+                </div>
+                <div class="flex justify-between border-b border-gray-800 pb-2">
+                    <span class="text-gray-400">Estofamento Interior:</span>
+                    <span id="pdf-seats" class="text-white">Couro Cuoio</span>
+                </div>
+                <div class="flex justify-between border-b border-gray-800 pb-2">
+                    <span class="text-gray-400">Tonalidade Insulfilm:</span>
+                    <span id="pdf-tint" class="text-white">Sem Insulfilm</span>
+                </div>
+                <div class="flex justify-between border-b border-gray-800 pb-2">
+                    <span class="text-gray-400">Pinças de Freio:</span>
+                    <span id="pdf-caliper" class="text-white">Vermelho Brembo</span>
+                </div>
+                <div class="flex justify-between pt-2 text-sm font-bold">
+                    <span class="text-gold">Valor Final Estimado:</span>
+                    <span id="pdf-total-price" class="text-gold">R$ 7.500.000</span>
+                </div>
+            </div>
+
+            <div class="pt-4 flex gap-3">
+                <button onclick="window.print()" class="w-full py-2.5 bg-gold text-black font-bold rounded-xl text-xs uppercase hover:brightness-110 flex items-center justify-center gap-2">
+                    <i data-lucide="printer" class="w-4 h-4"></i> Imprimir / Salvar PDF
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE AUTENTICAÇÃO (CRIAR CONTA / LOGIN) -->
+    <div id="auth-modal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden flex items-center justify-center p-4">
+        <div class="bg-gray-900 border border-gold/40 rounded-2xl max-w-sm w-full p-6 text-white relative space-y-4">
+            <button onclick="closeAuthModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+            
+            <h3 class="font-cinzel text-lg font-bold text-gold text-center">CLIENTE VIP APEX</h3>
+            
+            <div class="space-y-3 text-xs">
+                <div>
+                    <label class="text-gray-400 block mb-1">Nome Completo:</label>
+                    <input type="text" id="auth-name" placeholder="Seu nome" class="w-full bg-black border border-gray-700 p-2.5 rounded-lg text-white outline-none focus:border-gold">
+                </div>
+                <div>
+                    <label class="text-gray-400 block mb-1">E-mail Corporativo:</label>
+                    <input type="email" id="auth-email" placeholder="cliente@empresa.com" class="w-full bg-black border border-gray-700 p-2.5 rounded-lg text-white outline-none focus:border-gold">
+                </div>
+                <button onclick="saveUserAccount()" class="w-full py-3 bg-gold text-black font-bold rounded-xl hover:brightness-110 text-xs uppercase tracking-wider">
+                    Acessar Minha Conta VIP
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPT SKETCHFAB, AUDIO WEB API E LÓGICAS DE SISTEMA -->
+    <script>
+        lucide.createIcons();
+
+        // Modelos 3D Integrados
+        const carModels = [
+            {
+                uid: '1104c0e1e71047afb3e2e2ad072139c9',
+                title: 'FERRARI PUROSANGUE 2023',
+                basePrice: 7500000,
+                engineType: 'V12'
+            },
+            {
+                uid: 'c18b3cc96c6342d5a22315289f901706',
+                title: 'BUGATTI TOURBILLON 2026',
+                basePrice: 28000000,
+                engineType: 'V16'
+            },
+            {
+                uid: 'bf6c88f421af465587ea5e557adb983f',
+                title: '2019 AUDI R8 COUPÉ',
+                basePrice: 1650000,
+                engineType: 'V10'
+            }
+        ];
+
+        let currentCarIndex = 0;
+        let apiInstance = null;
+        let carMaterials = [];
+
+        let paintPrice = 0;
+        let tintPrice = 0;
+        let seatPrice = 0;
+
+        let selectedColorName = 'Rosso Corsa';
+        let selectedTintName = 'Sem Insulfilm';
+        let selectedSeatName = 'Couro Cuoio';
+        let selectedCaliperName = 'Vermelho Brembo';
+
+        let headlightsOn = false;
+        const iframe = document.getElementById('api-frame');
+
+        // Carrega Modelo no Sketchfab Viewer
+        function loadCarModel(index) {
+            document.getElementById('loading-overlay').classList.remove('opacity-0', 'hidden');
+            document.getElementById('car-title-display').innerText = carModels[index].title;
+            
+            const client = new Sketchfab('1.12.1', iframe);
+
+            client.init(carModels[index].uid, {
+                success: function(api) {
+                    apiInstance = api;
+                    api.start();
+                    api.addEventListener('viewerready', function() {
+                        document.getElementById('loading-overlay').classList.add('opacity-0');
+                        setTimeout(() => document.getElementById('loading-overlay').classList.add('hidden'), 500);
+
+                        api.getMaterialList(function(err, materials) {
+                            if (!err) {
+                                carMaterials = materials;
+                            }
+                        });
+                    });
+                },
+                error: function() { console.error('Erro ao carregar Sketchfab'); },
+                autostart: 1,
+                ui_theme: 'dark'
+            });
+
+            updateTotalPrice();
+            calculateFinance();
+        }
+
+        function prevCar() {
+            currentCarIndex = (currentCarIndex - 1 + carModels.length) % carModels.length;
+            loadCarModel(currentCarIndex);
+        }
+
+        function nextCar() {
+            currentCarIndex = (currentCarIndex + 1) % carModels.length;
+            loadCarModel(currentCarIndex);
+        }
+
+        function selectCarByIndex(index) {
+            currentCarIndex = index;
+            loadCarModel(currentCarIndex);
+            document.getElementById('customizer').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function hexToRgbNormalized(hex) {
+            hex = hex.replace('#', '');
+            return [
+                parseInt(hex.substring(0, 2), 16) / 255,
+                parseInt(hex.substring(2, 4), 16) / 255,
+                parseInt(hex.substring(4, 6), 16) / 255
+            ];
+        }
+
+        // Aplicação de Cor na Lataria
+        function applyColor(hexColor, name, extraPrice) {
+            paintPrice = extraPrice;
+            selectedColorName = name;
+            updateTotalPrice();
+
+            if (!apiInstance || carMaterials.length === 0) return;
+            const rgb = hexToRgbNormalized(hexColor);
+
+            carMaterials.forEach(mat => {
+                const matName = mat.name.toLowerCase();
+                const isBody = matName.includes('body') || matName.includes('paint') || matName.includes('carroceria') || matName.includes('lataria') || matName.includes('exterior') || matName.includes('primary') || matName.includes('material');
+                const isGlass = matName.includes('glass') || matName.includes('vidro') || matName.includes('wheel') || matName.includes('tire');
+
+                if (isBody && !isGlass && mat.channels) {
+                    if (mat.channels.AlbedoPBR) mat.channels.AlbedoPBR.color = rgb;
+                    if (mat.channels.DiffuseColor) mat.channels.DiffuseColor.color = rgb;
+                    apiInstance.setMaterial(mat, function() {});
+                }
+            });
+        }
+
+        // Aplicação de Insulfilm
+        function applyWindowTint(opacityFactor, tintName) {
+            selectedTintName = tintName;
+            if (!apiInstance || carMaterials.length === 0) return;
+
+            carMaterials.forEach(mat => {
+                const matName = mat.name.toLowerCase();
+                const isGlass = matName.includes('glass') || matName.includes('vidro') || matName.includes('window');
+
+                if (isGlass && mat.channels && mat.channels.Opacity) {
+                    mat.channels.Opacity.factor = opacityFactor;
+                    apiInstance.setMaterial(mat, function() {});
+                }
+            });
+        }
+
+        // Aplicação de Cor e Material dos Bancos
+        function applySeatMaterial(name, price) {
+            seatPrice = price;
+            selectedSeatName = name;
+            updateTotalPrice();
+        }
+
+        function applySeatColor(hexColor, name) {
+            if (!apiInstance || carMaterials.length === 0) return;
+            const rgb = hexToRgbNormalized(hexColor);
+
+            carMaterials.forEach(mat => {
+                const matName = mat.name.toLowerCase();
+                if ((matName.includes('seat') || matName.includes('banco') || matName.includes('interior')) && mat.channels) {
+                    if (mat.channels.AlbedoPBR) mat.channels.AlbedoPBR.color = rgb;
+                    apiInstance.setMaterial(mat, function() {});
+                }
+            });
+        }
+
+        // Aplicação de Cor da Pinça de Freio
+        function applyCaliperColor(hexColor, name) {
+            selectedCaliperName = name;
+            if (!apiInstance || carMaterials.length === 0) return;
+            const rgb = hexToRgbNormalized(hexColor);
+
+            carMaterials.forEach(mat => {
+                const matName = mat.name.toLowerCase();
+                if ((matName.includes('caliper') || matName.includes('pinca') || matName.includes('brake')) && mat.channels) {
+                    if (mat.channels.AlbedoPBR) mat.channels.AlbedoPBR.color = rgb;
+                    apiInstance.setMaterial(mat, function() {});
+                }
+            });
+        }
+
+        // Alternar Faróis
+        function toggleHeadlights() {
+            headlightsOn = !headlightsOn;
+            document.getElementById('headlight-status').innerText = headlightsOn ? 'ON' : 'OFF';
+            document.getElementById('headlight-overlay').style.opacity = headlightsOn ? '1' : '0';
+        }
+
+        // Pre-sets de Iluminação
+        function setStudioPreset(presetClass) {
+            const viewport = document.getElementById('viewport-bg');
+            viewport.className = `lg:col-span-2 rounded-2xl border border-gold/30 overflow-hidden relative shadow-2xl h-[580px] transition-all duration-500 ${presetClass}`;
+        }
+
+        // Ronco do Motor com Web Audio API
+        function playEngineSound() {
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(80, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(320, audioCtx.currentTime + 1.2);
+                osc.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 2.5);
+
+                gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 2.5);
+
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                osc.start();
+                osc.stop(audioCtx.currentTime + 2.5);
+            } catch(e) { console.log('Audio API blocked'); }
+        }
+
+        function updateTotalPrice() {
+            let base = carModels[currentCarIndex].basePrice;
+            let total = base + paintPrice + tintPrice + seatPrice;
+            document.getElementById('total-price-display').innerText = 'R$ ' + total.toLocaleString('pt-BR');
+        }
+
+        // Simulador de Financiamento
+        function calculateFinance() {
+            let base = carModels[currentCarIndex].basePrice;
+            let down = parseFloat(document.getElementById('calc-downpayment').value) || 0;
+            let months = parseInt(document.getElementById('calc-months').value) || 24;
+
+            let financed = Math.max(0, base - down);
+            let rate = 0.0095;
+            let monthly = financed > 0 ? (financed * rate) / (1 - Math.pow(1 + rate, -months)) : 0;
+
+            document.getElementById('calc-financed-amount').innerText = 'R$ ' + financed.toLocaleString('pt-BR');
+            document.getElementById('calc-monthly-payment').innerText = 'R$ ' + Math.round(monthly).toLocaleString('pt-BR');
+        }
+
+        // Modal Pro Forma PDF
+        function generateProFormaPDF() {
+            let base = carModels[currentCarIndex].basePrice;
+            let total = base + paintPrice + tintPrice + seatPrice;
+
+            document.getElementById('pdf-car-name').innerText = carModels[currentCarIndex].title;
+            document.getElementById('pdf-paint').innerText = selectedColorName;
+            document.getElementById('pdf-seats').innerText = selectedSeatName;
+            document.getElementById('pdf-tint').innerText = selectedTintName;
+            document.getElementById('pdf-caliper').innerText = selectedCaliperName;
+            document.getElementById('pdf-total-price').innerText = 'R$ ' + total.toLocaleString('pt-BR');
+
+            document.getElementById('proforma-modal').classList.remove('hidden');
+        }
+
+        function closeProFormaModal() {
+            document.getElementById('proforma-modal').classList.add('hidden');
+        }
+
+        // Chatbot e Respostas
+        function toggleChat() {
+            let chat = document.getElementById('chat-widget');
+            chat.classList.toggle('hidden');
+            chat.classList.toggle('flex');
+        }
+
+        function askQuickQuestion(questionText) {
+            document.getElementById('chat-input').value = questionText;
+            sendMessage();
+        }
+
+        function sendMessage() {
+            let input = document.getElementById('chat-input');
+            let text = input.value.trim();
+            if(!text) return;
+
+            let chatBox = document.getElementById('chat-messages');
+            chatBox.innerHTML += `<div class="bg-gold/20 text-gold p-2.5 rounded-xl ml-auto max-w-[85%] border border-gold/30">${text}</div>`;
+            input.value = '';
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            setTimeout(() => {
+                let response = "Excelente pergunta! Na Apex Luxury Dynamics da Av. Europa 850, oferecemos atendimento privativo. Como posso lhe ajudar a agendar uma visita?";
+                let t = text.toLowerCase();
+
+                if(t.includes("purosangue") || t.includes("ferrari")) {
+                    response = "A Ferrari Purosangue V12 possui 725 CV de potência e seu valor inicial é de R$ 7.500.000. Você pode customizar a cor no nosso painel 3D!";
+                } else if(t.includes("bugatti") || t.includes("tourbillon")) {
+                    response = "O Bugatti Tourbillon 2026 conta com motor V16 de 1800 CV e velocidade máxima de 445 km/h. Valor a partir de R$ 28.000.000.";
+                } else if(t.includes("audi") || t.includes("r8")) {
+                    response = "O Audi R8 Coupé V10 conta com 622 CV de potência, acelerando de 0 a 100 km/h em 3.1s. Valor de R$ 1.650.000.";
+                } else if(t.includes("onde") || t.includes("endereço") || t.includes("loja") || t.includes("sp")) {
+                    response = "Nossa concessionária física fica localizada na Av. Europa, 850 - Jardins, São Paulo - SP. Atendemos com agendamento VIP.";
+                } else if(t.includes("financiamento") || t.includes("parcelas") || t.includes("crédito")) {
+                    response = "Oferecemos financiamento via Private Banking com taxas a partir de 0,89% ao mês e prazos em até 48x.";
+                }
+
+                chatBox.innerHTML += `<div class="bg-gray-800 p-2.5 rounded-xl border border-gray-700/50 max-w-[85%] text-gray-200">${response}</div>`;
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }, 500);
+        }
+
+        // Modal de Conta VIP
+        function openAuthModal() {
+            document.getElementById('auth-modal').classList.remove('hidden');
+        }
+
+        function closeAuthModal() {
+            document.getElementById('auth-modal').classList.add('hidden');
+        }
+
+        function saveUserAccount() {
+            let name = document.getElementById('auth-name').value;
+            if(name) {
+                document.getElementById('user-btn-text').innerText = name.split(' ')[0];
+                alert(`Conta VIP criada com sucesso para ${name}!`);
+                closeAuthModal();
+            }
+        }
+
+        function scheduleVisit() {
+            alert('Sua solicitação foi enviada para nosso executivo de vendas na loja da Av. Europa 850!');
+        }
+
+        // Inicialização
+        window.addEventListener('load', () => {
+            loadCarModel(0);
+        });
+    </script>
+</body>
+</html>
