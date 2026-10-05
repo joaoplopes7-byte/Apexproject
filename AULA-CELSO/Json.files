@@ -1,5 +1,10 @@
 {
   "nome": "Aragorn",
   "classe": "Guerreiro",
-  "level": 1
+  "level": 1,
+
+ "título": "Derrotar o dragão",
+  "concluida": true,
+  "recompensa_extra": null
 }
+
