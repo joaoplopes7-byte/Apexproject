@@ -2,9 +2,25 @@
   "nome": "Aragorn",
   "classe": "Guerreiro",
   "level": 1,
-
- "título": "Derrotar o dragão",
-  "concluida": true,
-  "recompensa_extra": null
+  "missao_atual": {
+    "nome": "Derrotar o Dragão de Fogo",
+    "concluida": false,
+    "recompensa_extra": null
+  },
+  "mochila": {
+    "moedas_ouro": 50,
+    "itens": [
+      "poção",
+      "mapa",
+      "tocha"
+    ]
+  },
+  "montaria": {
+    "especie": "Dragão Vermelho",
+    "velocidade": 85,
+    "status_voo": {
+      "pode_voar": true,
+      "stamina_maxima": 100
+    }
+  }
 }
-
