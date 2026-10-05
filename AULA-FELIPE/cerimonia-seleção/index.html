@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cerimônia de Seleção - Hogwarts</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="conteiner">
+      <header>
+        <h1 class="titulo-principal">Descubra a sua casa</h1>
+        <p class="subtitulo">Deixe o Chapéu Seletor decidir o seu destino em Hogwarts</p>
+      </header>
+
+      <main>
+        <section class="secao-chapeu">
+            <button id="botao-chapeu" class="botao-chapeu" title="Clique para sortear!">
+                <div class="aura-chapeu"></div>
+                <img src="assets/sorting_hat.jpg" alt="Chapéu Seletor" class="imagem-chapeu" id="imagem-chapeu">    
+            </button>
+        </section>
+
+        <aside class="painel-mensagem">
+            <p id="mensagem-chapeu">Clique no Chapéu Seletor para iniciar o ritual...</p>
+        </aside>
+
+        <section class="lista-casas" id="lista-casas">
+            <!-- Grifinória -->
+            <div class="cartao grifinoria" id="casa-grifinoria">
+                <div class="moldura-brasao">
+                    <img src="assets/gryffindor.jpg" alt="Brasão Grifinória" class="imagem-brasao"> 
+                </div>
+                <h2>Grifinória</h2>
+                <p>Coragem, Bravura e Determinação</p>
+            </div>
+
+            <!-- Sonserina -->
+            <div class="cartao sonserina" id="casa-sonserina">
+                <div class="moldura-brasao">
+                    <img src="assets/slytherin.jpg" alt="Brasão Sonserina" class="imagem-brasao">
+                </div>
+                <h2>Sonserina</h2>
+                <p>Ambição, Astúcia e Liderança</p> 
+            </div>
+
+            <!-- Corvinal -->
+            <div class="cartao corvinal" id="casa-corvinal">
+                <div class="moldura-brasao">
+                    <img src="assets/ravenclaw.jpg" alt="Brasão Corvinal" class="imagem-brasao">
+                </div>
+                <h2>Corvinal</h2>
+                <p>Inteligência, Criatividade e Sabedoria</p>
+            </div>
+            
+            <!-- Lufa-Lufa -->
+            <div class="cartao lufa-lufa" id="casa-lufa-lufa">
+                <div class="moldura-brasao">
+                    <img src="assets/hufflepuff.jpg" alt="Brasão Lufa-Lufa" class="imagem-brasao">
+                </div>
+                <h2>Lufa-Lufa</h2>
+                <p>Lealdade, Paciência e Trabalho Duro</p>
+            </div>
+        </section>
+      </main>
+
+      <footer>
+         <p>&copy; 2026 Hogwarts Web Magic - Feito com Magia, HTML & CSS</p>
+      </footer>
+    </div>
+
+    <!-- Script de interação do Sorteio -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const btnChapeu = document.getElementById('botao-chapeu');
+        const imgChapeu = document.getElementById('imagem-chapeu');
+        const mensagem = document.getElementById('mensagem-chapeu');
+        const containerCasas = document.getElementById('lista-casas');
+        const casas = document.querySelectorAll('.lista-casas > .cartao');
+
+        let sorteando = false;
+
+        btnChapeu.addEventListener('click', function() {
+            if (sorteando) return;
+            sorteando = true;
+
+            // Limpa seleções anteriores
+            containerCasas.classList.remove('sorteado');
+            casas.forEach(function(casa) {
+                casa.classList.remove('selecionada');
+                casa.style.opacity = '';
+            });
+
+            // Animação e áudio mental do Chapéu
+            imgChapeu.classList.add('pensando');
+            mensagem.innerHTML = '<span class="texto-pensando">O Chapéu está analisando sua mente...</span>';
+
+            // Efeito roleta (luzes alternando rapidamente)
+            let index = 0;
+            const roleta = setInterval(function() {
+                casas.forEach(c => c.style.opacity = '0.25');
+                casas[index % casas.length].style.opacity = '1';
+                index++;
+            }, 100);
+
+            // Resultado do sorteio (após 2.8s)
+            setTimeout(function() {
+                clearInterval(roleta);
+                imgChapeu.classList.remove('pensando');
+
+                // Restaura opacidade do loop
+                casas.forEach(c => c.style.opacity = '');
+
+                // Seleciona 1 casa aleatória
+                const sorteadaIndex = Math.floor(Math.random() * casas.length);
+                const casaSorteada = casas[sorteadaIndex];
+                const nomeCasa = casaSorteada.querySelector('h2').textContent;
+
+                // Aplica estado selecionado
+                containerCasas.classList.add('sorteado');
+                casaSorteada.classList.add('selecionada');
+
+                // Mensagem Final
+                mensagem.innerHTML = 'O Chapéu Seletor decretou: <span class="destaque-casa">' + nomeCasa.toUpperCase() + '!</span>';
+                sorteando = false;
+            }, 2800);
+        });
+      });
+    </script>
+</body>
+</html>

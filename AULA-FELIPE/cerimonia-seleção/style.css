@@ -1,0 +1,340 @@
+/* ========================================================
+   1. ESTILOS BASE & RESET
+   ======================================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #030308;
+    color: #e2e8f0;
+    font-family: "Poppins", sans-serif;
+    min-height: 100vh; 
+    background-image: 
+        radial-gradient(circle at 50% 0%, #1e2942 0%, #030308 75%),
+        radial-gradient(circle at 80% 80%, rgba(214, 175, 55, 0.05) 0%, transparent 50%);    
+    overflow-x: hidden;
+}
+
+.conteiner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 32px 20px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.titulo-principal {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #d4af37;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 0 0 15px rgba(212, 175, 55, 0.5), 0 0 30px rgba(212, 175, 55, 0.2);
+}
+
+.subtitulo {
+    color: #94a3b8;
+    margin-top: 6px;
+    font-size: 1rem;
+}
+
+main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap: 25px;
+}
+
+/* Painel de Mensagem */
+.painel-mensagem {
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    border-radius: 50px;
+    padding: 12px 28px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(8px);
+}
+
+.painel-mensagem p {
+    font-style: italic;
+    color: #cbd5e1;
+    text-align: center;
+    font-size: 1.05rem;
+}
+
+.texto-pensando {
+    color: #d4af37;
+    animation: piscarTexto 1s infinite alternate;
+}
+
+.destaque-casa {
+    color: #ffd700;
+    font-size: 1.3rem;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    text-shadow: 0 0 15px rgba(255, 215, 0, 0.8);
+}
+
+footer {
+    text-align: center;
+    padding-top: 40px;
+    color: #475569;
+    font-size: 0.85rem;
+}
+
+/* ========================================================
+   2. CHAPÉU SELETOR E AURA MÁGICA
+   ======================================================== */
+.secao-chapeu {
+    display: flex;
+    justify-content: center;
+    position: relative;
+}
+
+.botao-chapeu {
+    background: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    position: relative;
+    outline: none;
+    border-radius: 50%;
+}
+
+.aura-chapeu {
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(212, 175, 55, 0.4) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: 0;
+}
+
+.botao-chapeu:hover .aura-chapeu {
+    opacity: 1;
+    animation: pulsoAura 2s infinite alternate;
+}
+
+.imagem-chapeu {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.9), 0 0 15px rgba(212, 175, 55, 0.3);
+    border: 3px solid #d4af37;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.botao-chapeu:hover .imagem-chapeu {
+    transform: scale(1.1) rotate(2deg);
+    box-shadow: 0 0 45px rgba(212, 175, 55, 0.8);
+}
+
+/* Animação do Chapéu Pensando */
+.imagem-chapeu.pensando {
+    animation: chapeuAtivo 0.5s infinite alternate ease-in-out;
+}
+
+@keyframes chapeuAtivo {
+    0% { 
+        transform: scale(1.08) rotate(-4deg); 
+        box-shadow: 0 0 25px #d4af37; 
+    }
+    100% { 
+        transform: scale(1.22) rotate(4deg); 
+        box-shadow: 0 0 60px #d4af37, 0 0 100px rgba(212, 175, 55, 0.5); 
+        filter: brightness(1.3); 
+    }
+}
+
+/* ========================================================
+   3. COLUNAS DAS CASAS E LOGOS REDONDAS
+   ======================================================== */
+.lista-casas {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 28px;
+    width: 100%;
+}
+
+.cartao {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    padding: 28px 20px;
+    transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+    text-align: center;
+    backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
+}
+
+.cartao::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+    transition: left 0.7s ease;
+}
+
+.cartao:hover::before {
+    left: 100%;
+}
+
+.cartao:hover {
+    transform: translateY(-8px);
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(212, 175, 55, 0.3);
+}
+
+/* FORMATO REDONDO PARA OS BRASÕES */
+.moldura-brasao {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    padding: 5px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.2), rgba(0,0,0,0.5));
+    box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.8), 0 8px 20px rgba(0, 0, 0, 0.6);
+    margin-bottom: 20px;
+    transition: all 0.4s ease;
+}
+
+.imagem-brasao {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s ease;
+}
+
+.cartao:hover .imagem-brasao {
+    transform: scale(1.1) rotate(3deg);
+}
+
+.cartao h2 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+}
+
+.cartao p {
+    font-size: 0.85rem;
+    color: #94a3b8;
+    line-height: 1.4;
+}
+
+/* ========================================================
+   4. EFEITOS CHAVE DA CASA SORTEADA (GLOW NEON)
+   ======================================================== */
+
+/* Apaga as casas não selecionadas */
+.lista-casas.sorteado > .cartao:not(.selecionada) {
+    opacity: 0.18;
+    transform: scale(0.92);
+    filter: grayscale(0.6);
+}
+
+/* Destaque principal da Casa Selecionada */
+.lista-casas > .cartao.selecionada {
+    opacity: 1 !important;
+    transform: scale(1.08) translateY(-12px) !important;
+    z-index: 5;
+}
+
+.lista-casas > .cartao.selecionada .moldura-brasao {
+    transform: scale(1.05);
+    box-shadow: 0 0 25px currentColor;
+}
+
+/* GRIFINÓRIA - Vermelho & Ouro Neon */
+.lista-casas > .cartao.grifinoria.selecionada {
+    background: linear-gradient(145deg, rgba(127, 9, 9, 0.75), rgba(5, 5, 5, 0.9));
+    border-color: #ff2a2a;
+    box-shadow: 0 0 50px rgba(255, 42, 42, 0.7), inset 0 0 20px rgba(255, 42, 42, 0.3);
+    animation: pulsoBrilhoGrifinoria 2s infinite alternate;
+}
+.lista-casas > .cartao.grifinoria.selecionada h2 { color: #ff5555; text-shadow: 0 0 10px rgba(255, 85, 85, 0.6); }
+
+/* SONSERINA - Verde Esmeralda Neon */
+.lista-casas > .cartao.sonserina.selecionada {
+    background: linear-gradient(145deg, rgba(13, 98, 52, 0.75), rgba(5, 5, 5, 0.9));
+    border-color: #00ff66;
+    box-shadow: 0 0 50px rgba(0, 255, 102, 0.7), inset 0 0 20px rgba(0, 255, 102, 0.3);
+    animation: pulsoBrilhoSonserina 2s infinite alternate;
+}
+.lista-casas > .cartao.sonserina.selecionada h2 { color: #33ff88; text-shadow: 0 0 10px rgba(51, 255, 136, 0.6); }
+
+/* CORVINAL - Azul Safira Neon */
+.lista-casas > .cartao.corvinal.selecionada {
+    background: linear-gradient(145deg, rgba(0, 58, 112, 0.75), rgba(5, 5, 5, 0.9));
+    border-color: #00aaff;
+    box-shadow: 0 0 50px rgba(0, 170, 255, 0.7), inset 0 0 20px rgba(0, 170, 255, 0.3);
+    animation: pulsoBrilhoCorvinal 2s infinite alternate;
+}
+.lista-casas > .cartao.corvinal.selecionada h2 { color: #33bbff; text-shadow: 0 0 10px rgba(51, 187, 255, 0.6); }
+
+/* LUFA-LUFA - Dourado Neon */
+.lista-casas > .cartao.lufa-lufa.selecionada {
+    background: linear-gradient(145deg, rgba(236, 185, 57, 0.65), rgba(5, 5, 5, 0.9));
+    border-color: #ffd700;
+    box-shadow: 0 0 50px rgba(255, 215, 0, 0.7), inset 0 0 20px rgba(255, 215, 0, 0.3);
+    animation: pulsoBrilhoLufaLufa 2s infinite alternate;
+}
+.lista-casas > .cartao.lufa-lufa.selecionada h2 { color: #ffe033; text-shadow: 0 0 10px rgba(255, 224, 51, 0.6); }
+
+/* Keyframes dos Pulsos Mágicos */
+@keyframes pulsoBrilhoGrifinoria {
+    0% { box-shadow: 0 0 35px rgba(255, 42, 42, 0.6); }
+    100% { box-shadow: 0 0 65px rgba(255, 42, 42, 0.95); }
+}
+
+@keyframes pulsoBrilhoSonserina {
+    0% { box-shadow: 0 0 35px rgba(0, 255, 102, 0.6); }
+    100% { box-shadow: 0 0 65px rgba(0, 255, 102, 0.95); }
+}
+
+@keyframes pulsoBrilhoCorvinal {
+    0% { box-shadow: 0 0 35px rgba(0, 170, 255, 0.6); }
+    100% { box-shadow: 0 0 65px rgba(0, 170, 255, 0.95); }
+}
+
+@keyframes pulsoBrilhoLufaLufa {
+    0% { box-shadow: 0 0 35px rgba(255, 215, 0, 0.6); }
+    100% { box-shadow: 0 0 65px rgba(255, 215, 0, 0.95); }
+}
+
+@keyframes piscarTexto {
+    0% { opacity: 0.4; }
+    100% { opacity: 1; }
+}
+
+@keyframes pulsoAura {
+    0% { transform: scale(0.95); opacity: 0.5; }
+    100% { transform: scale(1.15); opacity: 0.9; }
+}

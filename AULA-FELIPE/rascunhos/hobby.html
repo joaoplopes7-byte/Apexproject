@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minha Fanpage de F1</title>
+    <!-- Importação de fonte moderna do Google Fonts -->
+    <link href="https://googleapis.com" rel="stylesheet">
+    <style>
+        /* Reset de margens e definição da fonte principal */
+        body { 
+            background-color: #15151c; /* Azul escuro/preto de fibra de carbono */
+            color: #f3f3f3; 
+            font-family: 'Montserrat', sans-serif; 
+            margin: 0; 
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        /* Cabeçalho com degradê e efeito de velocidade */
+        header { 
+            background: linear-gradient(135deg, #e10600 0%, #a30400 100%); 
+            padding: 40px 20px; 
+            text-align: center; 
+            border-bottom: 5px solid #fff;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.4);
+        }
+
+        /* Container central para o conteúdo não espalhar na tela */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Estilização das seções */
+        section { 
+            margin-bottom: 40px; 
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            color: #e10600;
+            border-left: 5px solid #e10600;
+            padding-left: 15px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        /* Layout em grade para os cards de curiosidades */
+        .grid-curiosidades {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background-color: #22222b;
+            padding: 25px;
+            border-radius: 8px;
+            border-top: 4px solid #e10600;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease;
+        }
+
+        /* Efeito de passar o mouse sobre o card */
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card p {
+            margin: 0;
+            font-size: 1rem;
+            color: #cccccc;
+        }
+
+        /* Lista de pilotos estilizada */
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            background-color: #22222b;
+            margin-bottom: 12px;
+            padding: 15px 20px;
+            border-radius: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 3px solid #fff;
+        }
+
+        /* Destaca o número de títulos */
+        .titulos {
+            background-color: #e10600;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Universo da Fórmula 1</h1>
+    </header>
+
+    <div class="container">
+        <section>
+            <h2>Bem-vindo à minha página de fãs!</h2>
+            <p>Aqui você acompanha tudo sobre velocidade, carros e escuderias do esporte mais rápido do mundo.</p>
+        </section>
+
+        <section>
+            <h2>Curiosidades</h2>
+            <div class="grid-curiosidades">
+                <div class="card">
+                    <p>A força do vento nos carros é tão forte que eles poderiam andar grudados no teto de um túnel se passassem de 180 km/h.</p>
+                </div>
+                <div class="card">
+                    <p>Os mecânicos trocam os quatro pneus do carro em apenas cerca de dois segundos.</p>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Pilotos mais vencedores</h2>
+            <ul>
+                <li><span>Michael Schumacher</span> <span class="titulos">7 Títulos</span></li>
+                <li><span>Lewis Hamilton</span> <span class="titulos">7 Títulos</span></li>
+                <li><span>Juan Manuel Fangio</span> <span class="titulos">5 Títulos</span></li>
+            </ul>
+        </section>
+    </div>
+
+</body>
+</html>

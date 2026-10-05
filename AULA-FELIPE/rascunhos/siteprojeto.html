@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Williams 1994 FW16 - Lab 3D Interativo</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #0b111e;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #fff;
+        }
+        #canvas-container {
+            width: 100vw;
+            height: 100vh;
+        }
+        .ui-panel {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(12, 28, 54, 0.9);
+            padding: 20px 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            text-align: center;
+            width: 80%;
+            max-width: 400px;
+        }
+        .slider-label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 14px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #ffdf00; /* Dourado */
+        }
+        input[type=range] {
+            width: 100%;
+            margin: 5px 0;
+            background: #071324;
+            border-radius: 5px;
+            accent-color: #ffdf00;
+        }
+        .instruction {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(7, 19, 36, 0.85);
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-size: 12px;
+            border-left: 4px solid #fff;
+            pointer-events: none;
+        }
+    </style>
+    <script src="https://cloudflare.com"></script>
+    <script src="https://jsdelivr.net"></script>
+</head>
+<body>
+
+    <div class="instruction">🏁 <b>Williams FW16 (1994)</b><br>Arraste para girar | Scroll para Zoom</div>
+    <div id="canvas-container"></div>
+
+    <div class="ui-panel">
+        <label class="slider-label" for="explodeSlider">Vista Explodida - Williams 94</label>
+        <input type="range" id="explodeSlider" min="0" max="1" step="0.01" value="0">
+    </div>
+
+    <script>
+        // 1. Configurações da Cena
+        const container = document.getElementById('canvas-container');
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x0a0f1d);
+
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.set(0, 4, 8);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.shadowMap.enabled = true;
+        container.appendChild(renderer.domElement);
+
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+        controls.maxPolarAngle = Math.PI / 2 - 0.05;
+
+        // 2. Iluminação de Estúdio Clássico
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+        scene.add(ambientLight);
+
+        const topLight = new THREE.DirectionalLight(0xffffff, 1.2);
+        topLight.position.set(0, 10, 5);
+        scene.add(topLight);
+
+        // Grid branco e azul estilo garagem antiga
+        const gridHelper = new THREE.GridHelper(20, 20, 0xffdf00, 0x17253f);
+        gridHelper.position.y = -0.6;
+        scene.add(gridHelper);
+
+        // 3. Materiais Oficiais da Pintura de 1994 (Rothmans Style)
+        const rothmansBlue = new THREE.MeshStandardMaterial({ color: 0x002147, roughness: 0.1, metalness: 0.8 }); // Azul Escuro Real
+        const classicWhite = new THREE.MeshStandardMaterial({ color: 0xf5f5f5, roughness: 0.2, metalness: 0.2 }); // Branco Puro
+        const goldLine = new THREE.MeshStandardMaterial({ color: 0xd4af37, roughness: 0.3, metalness: 0.9 });     // Linha Dourada
+        const tireMat = new THREE.MeshStandardMaterial({ color: 0x1c1c1c, roughness: 0.9 });                       // Pneus Slick Lisos
+        const yellowEif = new THREE.MeshStandardMaterial({ color: 0xffcc00, roughness: 0.2 });                     // Detalhe Amarelo Renault
+
+        const carGroup = new THREE.Group();
+        scene.add(carGroup);
+
+        // --- Modelagem do Formato de 1994 (Bico Baixo e Tomadas de Ar Arredondadas) ---
+        
+        // Traseira do Chassi (Azul)
+        const rearBodyGeom = new THREE.BoxGeometry(0.8, 0.6, 1.8);
+        const rearBodyMesh = new THREE.Mesh(rearBodyGeom, rothmansBlue);
+        rearBodyMesh.position.set(0, 0, -0.4);
+        carGroup.add(rearBodyMesh);
+
+        // Faixa Dourada e Branca Central (Marcando o design icônico de 94)
+        const stripeGeom = new THREE.BoxGeometry(0.82, 0.62, 0.2);
+        const stripeMesh = new THREE.Mesh(stripeGeom, goldLine);
+        stripeMesh.position.set(0, 0, 0.5);
+        carGroup.add(stripeMesh);
+
+        // Frente do Chassi / Cockpit (Branco)
+        const frontBodyGeom = new THREE.BoxGeometry(0.7, 0.5, 1.4);
+        const frontBodyMesh = new THREE.Mesh(frontBodyGeom, classicWhite);
+        frontBodyMesh.position.set(0, -0.05, 1.2);
+        carGroup.add(frontBodyMesh);
+
+        // Caixa de Ar Superior do Motor (Entrada oval amarela clássica da Renault V10)
+        const airboxGeom = new THREE.CylinderGeometry(0.2, 0.25, 0.7, 16);
+        airboxGeom.rotateX(Math.PI / 2);
+        const airboxMesh = new THREE.Mesh(airboxGeom, yellowEif);
+        airboxMesh.position.set(0, 0.5, -0.3);
+        carGroup.add(airboxMesh);
+
+        // Asa Dianteira Baixa de 1994 (Branca com flaps pretos)
+        const frontWingGeom = new THREE.BoxGeometry(1.9, 0.08, 0.4);
+        const frontWingMesh = new THREE.Mesh(frontWingGeom, classicWhite);
+        frontWingMesh.position.set(0, -0.25, 2.1);
+        carGroup.add(frontWingMesh);
+
+        // Asa Traseira Gigante de 1994 (Branca e Azul, típica da época sem DRS)
+        const rearWingGeom = new THREE.BoxGeometry(1.4, 0.8, 0.4);
+        const rearWingMesh = new THREE.Mesh(rearWingGeom, classicWhite);
+        rearWingMesh.position.set(0, 0.5, -1.6);
+        carGroup.add(rearWingMesh);
+
+        // Rodas Traseiras bem mais largas que as dianteiras (Física dos anos 90)
+        const frontWheelGeom = new THREE.CylinderGeometry(0.48, 0.48, 0.38, 24);
+        frontWheelGeom.rotateZ(Math.PI / 2);
+        
+        const rearWheelGeom = new THREE.CylinderGeometry(0.52, 0.52, 0.55, 24); // Muito mais larga atrás
+        rearWheelGeom.rotateZ(Math.PI / 2);
+
+        const wheelPositions = [
+            { geom: frontWheelGeom, origX:  0.75, origY: -0.1, origZ:  1.3, dirX:  1.5 }, // Dianteira Direita
+            { geom: frontWheelGeom, origX: -0.75, origY: -0.1, origZ:  1.3, dirX: -1.5 }, // Dianteira Esquerda
+            { geom: rearWheelGeom,  origX:  0.85, origY: -0.06, origZ: -1.1, dirX:  1.5 }, // Traseira Direita
+            { geom: rearWheelGeom,  origX: -0.85, origY: -0.06, origZ: -1.1, dirX: -1.5 }  // Traseira Esquerda
+        ];
+
+        const wheelGroups = [];
+
+        wheelPositions.forEach(pos => {
+            const tire = new THREE.Mesh(pos.geom, tireMat);
+            tire.position.set(pos.origX, pos.origY, pos.origZ);
+            carGroup.add(tire);
+            wheelGroups.push({ mesh: tire, config: pos });
+        });
+
+        // 4. Mapeamento do Efeito Desmontar (Vista Explodida)
+        const componentsToExplode = [
+            { mesh: frontWingMesh, origX: 0, origY: -0.25, origZ: 2.1, dirX: 0, dirY: 0, dirZ: 1.3 },   // Asa dianteira avança bastante
+            { mesh: rearWingMesh, origX: 0, origY: 0.5, origZ: -1.6, dirX: 0, dirY: 1.1, dirZ: -0.9 },   // Asa traseira sobe e recua
+            { mesh: airboxMesh, origX: 0, origY: 0.5, origZ: -0.3, dirX: 0, dirY: 1.4, dirZ: 0 },       // Tomada de ar sobe reto
+            { mesh: frontBodyMesh, origX: 0, origY: -0.05, origZ: 1.2, dirX: 0, dirY: 0.4, dirZ: 0.3 },  // Cockpit levanta levemente
+            { mesh: stripeMesh, origX: 0, origY: 0, origZ: 0.5, dirX: 0, dirY: -0.2, dirZ: 0 },         // Linha dourada desloca para baixo
+            { mesh: rearBodyMesh, origX: 0, origY: 0, origZ: -0.4, dirX: 0, dirY: -0.3, dirZ: 0 }        // Bloco traseiro/motor desce
+        ];
+
+        const slider = document.getElementById('explodeSlider');
+        
+        function updateExplodedView() {
+            const factor = parseFloat(slider.value);
+
+            // Afastar rodas lateralmente
+            wheelGroups.forEach(w => {
+                w.mesh.position.x = w.config.origX + (w.config.dirX * factor);
+            });
+
+            // Afastar carenagens históricas nos eixos corretos
+            componentsToExplode.forEach(part => {
+                part.mesh.position.x = part.origX + (part.dirX * factor);
+                part.mesh.position.y = part.origY + (part.dirY * factor);
+                part.mesh.position.z = part.origZ + (part.dirZ * factor);
+            });
+        }
+
+        slider.addEventListener('input', updateExplodedView);
+
+        // 5. Loop de Renderização
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update();
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        // Ajuste de tela responsivo
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+</html>
