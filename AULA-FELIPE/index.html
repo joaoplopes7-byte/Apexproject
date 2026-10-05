@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Apex Luxury Dynamics | Showroom Virtual</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config={theme:{extend:{colors:{obs:'#0a0a0b',char:'#17181b',gold:'#c9a24b'},fontFamily:{serif:['Cormorant Garamond','serif'],sans:['Inter','sans-serif']}}}}</script>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+<script src="https://static.sketchfab.com/api/sketchfab-viewer-1.12.1.js"></script>
+<style>
+body{background:#0a0a0b;color:#e4e4e7;font-family:Inter,sans-serif}
+.card{background:#17181b;border:1px solid #2a2b30;border-radius:14px}
+.chip{border:1px solid #33343a;padding:6px 12px;border-radius:999px;font-size:12px;cursor:pointer;transition:.15s;background:transparent;color:#d4d4d8}
+.chip:hover{border-color:#c9a24b88}.chip.on{border-color:#c9a24b;color:#c9a24b;background:#c9a24b18}
+.btn{background:linear-gradient(135deg,#e6c76a,#b8912f);color:#111;font-weight:600;padding:10px 18px;border-radius:10px;font-size:14px}
+.btn:hover{filter:brightness(1.1)}
+.btn2{border:1px solid #c9a24b;color:#c9a24b;padding:10px 18px;border-radius:10px;font-size:14px}
+.btn2:hover{background:#c9a24b22}
+input,select{background:#0f1012;border:1px solid #33343a;border-radius:10px;padding:9px 12px;width:100%;color:#e4e4e7;font-size:14px}
+input:focus,select:focus,button:focus-visible{outline:2px solid #c9a24b;outline-offset:2px}
+label{font-size:12px;color:#a1a1aa;display:block;margin-bottom:4px}
+.navb{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;background:#000a;border:1px solid #c9a24b;color:#c9a24b;font-size:24px;z-index:5}
+#stage{transition:background .6s;background:linear-gradient(#0c0c0d,#26282b 70%,#111)}
+#stage[data-l="Neon Studio"]{background:radial-gradient(circle at 50% 100%,#7a1fff66,transparent 60%),linear-gradient(#0a0a12,#001a2a)}
+#stage[data-l="Pôr do Sol"]{background:linear-gradient(#2b0f2e,#d9602b 85%,#f2b45a)}
+#stage[data-l="High-Key Daylight"]{background:linear-gradient(#f1f4f6,#aab2b8)}
+.drl{position:absolute;top:56%;width:14%;height:5%;border-radius:50%;background:#fff;filter:blur(8px);box-shadow:0 0 40px 18px #cfe6ff;opacity:0;transition:.4s;z-index:4;pointer-events:none}
+.drl.on{opacity:.9}
+.msg{max-width:85%;padding:8px 12px;border-radius:12px;font-size:13px;line-height:1.45;white-space:pre-line}
+.me{background:#c9a24b;color:#111;margin-left:auto}.bot{background:#26272c}
+dialog{background:#17181b;color:#e4e4e7;border:1px solid #c9a24b55;border-radius:16px;padding:0;max-width:640px;width:92%}
+dialog::backdrop{background:#000b}
+@media print{body *{visibility:hidden}#pfDoc,#pfDoc *{visibility:visible}#pfDoc{position:absolute;left:0;top:0;width:100%;background:#fff;color:#000;padding:24px}}
+</style>
+</head>
+<body>
+<header class="sticky top-0 z-40 backdrop-blur bg-obs/80 border-b border-white/10">
+ <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between gap-3">
+  <a href="#estudio" class="font-serif text-2xl tracking-[.2em] text-gold font-bold">APEX</a>
+  <nav class="hidden md:flex gap-6 text-sm text-zinc-400">
+   <a href="#estudio" class="hover:text-gold">Estúdio 3D</a><a href="#catalogo" class="hover:text-gold">Pronta Entrega</a><a href="#comparar" class="hover:text-gold">Comparar</a><a href="#financiar" class="hover:text-gold">Financiar</a><a href="#revisao" class="hover:text-gold">Revisão VIP</a>
+  </nav>
+  <div class="flex gap-2"><button id="pfBtn" class="btn2 hidden sm:block">Ficha Pro Forma</button><button id="vipBtn" class="btn">Minha Conta VIP</button></div>
+ </div>
+</header>
+
+<main>
+<section id="estudio" class="max-w-7xl mx-auto px-4 py-10">
+ <p class="text-gold text-sm">Av. Europa, 850, São Paulo</p>
+ <h1 class="font-serif text-4xl md:text-6xl mt-1">Apex Luxury Dynamics</h1>
+ <p class="text-zinc-400 mt-2 max-w-xl">Gire, configure e ouça o motor de cada modelo antes de visitar o showroom.</p>
+ <div class="grid lg:grid-cols-3 gap-5 mt-6">
+  <div class="lg:col-span-2">
+   <div id="stage" data-l="Garagem Subterrânea" class="relative rounded-2xl overflow-hidden border border-white/10 aspect-[16/10]">
+    <div id="vw" class="absolute inset-0"></div>
+    <div id="ld" class="absolute top-3 left-1/2 -translate-x-1/2 z-[5] text-xs px-3 py-1 rounded-full bg-black/70 text-gold pointer-events-none">Carregando modelo 3D...</div>
+    <div id="fb" class="absolute inset-0 hidden flex-col items-center justify-center z-[3]" style="background:inherit">
+     <svg viewBox="0 0 600 240" class="w-4/5 max-w-xl"><path id="fbBody" d="M30 172Q40 130 120 120L200 80Q300 55 410 85L500 120Q570 130 575 172L575 190L30 190Z" fill="#c40000"/><path d="M215 92Q300 72 395 95L455 120L170 120Z" fill="#0c1218"/><circle cx="150" cy="190" r="38" fill="#111"/><circle cx="150" cy="190" r="22" fill="#999"/><circle cx="460" cy="190" r="38" fill="#111"/><circle cx="460" cy="190" r="22" fill="#999"/><rect id="fbCal" x="140" y="176" width="14" height="22" fill="#d00"/></svg>
+     <p class="text-sm text-zinc-300 mt-2">Não foi possível carregar nenhum modelo 3D. Verifique a conexão e tente novamente.</p>
+     <button id="retry" class="btn2 mt-3">Tentar o 3D novamente</button>
+    </div>
+    <div class="drl" style="left:22%"></div><div class="drl" style="right:22%"></div>
+    <button id="prev" class="navb" style="left:12px" aria-label="Carro anterior">‹</button>
+    <button id="next" class="navb" style="right:12px" aria-label="Próximo carro">›</button>
+    <div class="absolute bottom-3 left-4 z-[5]"><div id="cn" class="font-serif text-2xl text-gold drop-shadow"></div><div id="cs" class="text-xs text-zinc-300 drop-shadow"></div></div>
+   </div>
+   <div class="flex flex-wrap gap-2 mt-3">
+    <button id="rev" class="btn">Ronco do motor</button>
+    <button id="drlB" class="btn2">Faróis DRL</button>
+    <button id="altB" class="btn2">Versão leve do modelo 3D</button>
+    <button id="pfBtn2" class="btn2 sm:hidden">Ficha Pro Forma</button>
+   </div>
+  </div>
+  <div id="ctl" class="card p-5 space-y-4 max-h-[640px] overflow-y-auto"></div>
+ </div>
+</section>
+
+<section id="catalogo" class="max-w-7xl mx-auto px-4 py-10">
+ <h2 class="font-serif text-3xl mb-5">Pronta entrega</h2>
+ <div id="cat" class="grid md:grid-cols-3 gap-5"></div>
+ <p class="text-xs text-zinc-500 mt-3">Valores ilustrativos, sujeitos a confirmação pela concessionária.</p>
+</section>
+
+<section id="comparar" class="max-w-7xl mx-auto px-4 py-10">
+ <h2 class="font-serif text-3xl mb-5">Comparativo de desempenho</h2>
+ <div class="card overflow-x-auto"><table id="cmp" class="w-full text-sm min-w-[560px]"></table></div>
+</section>
+
+<section id="financiar" class="max-w-7xl mx-auto px-4 py-10">
+ <h2 class="font-serif text-3xl mb-5">Financiamento Private Banking</h2>
+ <div class="card p-6 grid md:grid-cols-2 gap-6">
+  <div class="space-y-4">
+   <div><label>Veículo</label><select id="fCar"></select></div>
+   <div><label>Entrada: <b id="fEv" class="text-gold"></b></label><input id="fEnt" type="range" min="10" max="80" value="30"></div>
+   <div><label>Parcelas</label><select id="fN"><option>12</option><option>24</option><option selected>36</option><option>48</option></select></div>
+   <p class="text-xs text-zinc-500">Simulação com taxa de 1,35% a.m. Condições finais dependem de análise de crédito.</p>
+  </div>
+  <div id="fOut" class="space-y-2"></div>
+ </div>
+</section>
+
+<section id="revisao" class="max-w-7xl mx-auto px-4 py-10">
+ <h2 class="font-serif text-3xl mb-1">Revisão e manutenção VIP</h2>
+ <p class="text-zinc-400 mb-5">Atendimento na Av. Europa, 850, São Paulo.</p>
+ <div class="grid md:grid-cols-2 gap-5">
+  <div class="card p-6 grid grid-cols-2 gap-4">
+   <div class="col-span-2"><label>Veículo da frota</label><select id="bCar"></select></div>
+   <div class="col-span-2"><label>Serviço</label><select id="bSv"></select></div>
+   <div class="col-span-2"><label>Engenheiro credenciado</label><select id="bEng"></select></div>
+   <div><label>Data</label><input id="bDt" type="date"></div>
+   <div><label>Horário</label><select id="bTm"></select></div>
+   <div class="col-span-2"><label>Seu nome</label><input id="bNm" placeholder="Nome completo"></div>
+   <div class="col-span-2 flex items-center justify-between"><div><div class="text-xs text-zinc-400">Valor estimado</div><div id="bPr" class="text-2xl text-gold font-serif"></div></div><button id="bGo" class="btn">Confirmar agendamento</button></div>
+  </div>
+  <div id="bOut" class="card p-6 flex items-center justify-center text-zinc-500 text-sm text-center">Preencha o formulário para receber a confirmação com protocolo.</div>
+ </div>
+</section>
+</main>
+
+<footer class="border-t border-white/10 py-8 text-center text-xs text-zinc-500">Apex Luxury Dynamics · Av. Europa, 850, Jardim Europa, São Paulo · Seg a Sáb, 9h às 19h</footer>
+
+<button id="chatBtn" class="fixed bottom-5 right-5 z-50 btn rounded-full" style="border-radius:999px;padding:14px 20px">Concierge IA</button>
+<div id="chat" class="hidden fixed bottom-20 right-4 z-50 w-[92vw] max-w-sm card flex-col overflow-hidden shadow-2xl" style="height:min(520px,70vh)">
+ <div class="px-4 py-3 border-b border-white/10 text-gold font-serif text-lg">Concierge Apex</div>
+ <div id="msgs" class="flex-1 overflow-y-auto p-3 space-y-2"></div>
+ <div id="pills" class="flex gap-2 overflow-x-auto px-3 py-2 border-t border-white/10"></div>
+ <div class="flex gap-2 p-3 border-t border-white/10"><input id="cin" placeholder="Pergunte qualquer coisa"><button id="csend" class="btn">Enviar</button></div>
+</div>
+
+<dialog id="pf"><div id="pfDoc" class="p-6"></div><div class="flex gap-2 p-4 border-t border-white/10 justify-end"><button class="btn2" onclick="pf.close()">Fechar</button><button class="btn" onclick="window.print()">Salvar / imprimir PDF</button></div></dialog>
+<dialog id="vip"><div class="p-6"><div class="flex gap-2 mb-4"><button class="chip on" id="tLg">Entrar</button><button class="chip" id="tSg">Criar conta</button></div><div id="vipBody" class="space-y-3"></div><p id="vipMsg" class="text-sm text-gold mt-3"></p></div><div class="p-4 border-t border-white/10 text-right"><button class="btn2" onclick="vip.close()">Fechar</button></div></dialog>
+
+<script>
+const $=i=>document.getElementById(i),fmt=n=>n.toLocaleString('pt-BR',{style:'currency',currency:'BRL',maximumFractionDigits:0});
+const CARS=[
+{n:'Ferrari Purosangue',uid:'1104c0e1e71047afb3e2e2ad072139c9',alt:'541dc84c37174356a7b0efd44904593d',eng:'V12 6.5 aspirado',t:'V12',cv:725,tq:'716 Nm',z:'3,3 s',v:310,tr:'Integral (AWD)',p:4900000,m:1.3},
+{n:'Bugatti Tourbillon',uid:'c18b3cc96c6342d5a22315289f901706',alt:'4f63f5a74611477989cefd9861b9784a',eng:'V16 8.3 híbrido quad-turbo',t:'V16',cv:1800,tq:'1.100 Nm (combustão)',z:'2,0 s',v:445,tr:'Integral (AWD)',p:30000000,m:4},
+{n:'2019 Audi R8 Coupé',uid:'bf6c88f421af465587ea5e557adb983f',alt:'a8bac7478ad74ef885d5812f56d40715',eng:'V10 5.2 aspirado',t:'V10',cv:620,tq:'580 Nm',z:'3,1 s',v:331,tr:'Quattro (AWD)',p:1900000,m:1}];
+const PAINT={'Rosso Corsa':'#c40000','Nero Daytona':'#0b0b0c','Giallo Modena':'#f2c500','Oro 24k':'#d4af37'};
+const UC={'Preto':'#151515','Vermelho':'#8b0000','Caramelo':'#a8672b','Branco':'#eeeeee'};
+const CAL={'Vermelho':'#dd0000','Amarelo':'#ffd000','Azul':'#0a5cff','Verde Acid':'#a6ff00'};
+const TINT={G70:.3,G20:.7,G5:.93},ROUGH={'Couro Natural':.45,'Alcantara':.95,'Poliéster Tech':.7};
+const S={c:0,paint:'Rosso Corsa',tint:'G70',uph:'Couro Natural',uc:'Preto',cal:'Vermelho',lit:'Garagem Subterrânea',drl:false};
+let api=null,mats=[],loaded=false,tk=0,timer;
+
+function grp(t,id){const d=document.createElement('div');d.innerHTML=`<h3 class="text-sm text-gold mb-2">${t}</h3><div id="${id}" class="flex flex-wrap gap-2"></div>`;$('ctl').appendChild(d)}
+const mark=(id,k)=>[...$(id).children].forEach(b=>b.classList.toggle('on',b.dataset.v===S[k]));
+function opts(id,list,k,cb,map){const h=$(id);list.forEach(n=>{const b=document.createElement('button');b.className='chip';b.dataset.v=n;b.innerHTML=(map?`<i style="background:${map[n]};border:1px solid #666" class="inline-block w-2.5 h-2.5 rounded-full mr-1.5"></i>`:'')+n;b.onclick=()=>{S[k]=n;mark(id,k);cb()};h.appendChild(b)});mark(id,k)}
+grp('Pintura da lataria','gP');grp('Insulfilm (transparência)','gT');grp('Estofamento','gU');grp('Cor do estofamento','gUC');grp('Pinças Brembo','gC');grp('Iluminação do estúdio','gL');
+opts('gP',Object.keys(PAINT),'paint',applyAll,PAINT);opts('gT',Object.keys(TINT),'tint',applyAll);
+opts('gU',Object.keys(ROUGH),'uph',applyAll);opts('gUC',Object.keys(UC),'uc',applyAll,UC);opts('gC',Object.keys(CAL),'cal',applyAll,CAL);
+opts('gL',['Neon Studio','Pôr do Sol','Garagem Subterrânea','High-Key Daylight'],'lit',()=>$('stage').dataset.l=S.lit);
+
+const lin=h=>[1,3,5].map(i=>Math.pow(parseInt(h.substr(i,2),16)/255,2.2));
+const cls=n=>{n=(n||'').toLowerCase();
+ if(/glass|window|windscreen|vidro/.test(n))return'g';
+ if(/light|lamp|headl|lens|led|farol/.test(n))return'l';
+ if(/caliper|pinca/.test(n))return'c';
+ if(/wheel|rim|tire|tyre|roda|disc|rotor|brake/.test(n))return'w';
+ if(/seat|leather|alcantara|interior|upholst|cabin|dash|banco/.test(n))return'u';
+ if(/paint|body|carpaint|car_paint|exterior|lataria|shell|bodywork/.test(n))return'b';return''};
+function applyMat(m){const k=cls(m.name),ch=m.channels;if(!k||!ch)return;let ok=false;
+ const alb=h=>{if(ch.AlbedoPBR){ch.AlbedoPBR.enable=true;ch.AlbedoPBR.color=lin(h);delete ch.AlbedoPBR.texture;ok=true}};
+ if(k==='b')alb(PAINT[S.paint]);
+ if(k==='c')alb(CAL[S.cal]);
+ if(k==='u'){alb(UC[S.uc]);if(ch.RoughnessPBR){ch.RoughnessPBR.enable=true;ch.RoughnessPBR.factor=ROUGH[S.uph]}}
+ if(k==='g'&&ch.Opacity){ch.Opacity.enable=true;ch.Opacity.type='alphaBlend';ch.Opacity.factor=TINT[S.tint];ok=true}
+ if(ok)api.setMaterial(m)}
+function applyAll(){$('fbBody').setAttribute('fill',PAINT[S.paint]);$('fbCal').setAttribute('fill',CAL[S.cal]);if(api&&loaded)mats.forEach(applyMat)}
+
+function showFb(){$('fb').classList.remove('hidden');$('fb').classList.add('flex')}
+function hideFb(){$('fb').classList.add('hidden');$('fb').classList.remove('flex')}
+let curAlt=false;
+function load(alt){alt=alt===true;curAlt=alt;const k=++tk,c=CARS[S.c];loaded=false;api=null;mats=[];clearTimeout(timer);hideFb();$('ld').classList.remove('hidden');
+ $('cn').textContent=c.n;$('cs').textContent=`${c.eng} · ${c.cv} cv · 0-100 em ${c.z}`+(alt?' · versão leve':'');
+ $('vw').innerHTML='<iframe id="fr" title="Modelo 3D" class="w-full h-full" allow="autoplay; fullscreen; xr-spatial-tracking"></iframe>';
+ const fail=()=>{if(k!==tk)return;clearTimeout(timer);if(!alt)load(true);else{$('ld').classList.add('hidden');showFb()}};
+ try{new Sketchfab('1.12.1',$('fr')).init(alt?c.alt:c.uid,{autostart:1,transparent:1,preload:1,ui_infos:0,ui_hint:0,dnt:1,
+  success:a=>{if(k!==tk)return;api=a;a.start();a.addEventListener('viewerready',()=>{if(k!==tk)return;clearTimeout(timer);loaded=true;hideFb();$('ld').classList.add('hidden');a.getMaterialList((e,m)=>{if(k!==tk)return;mats=m||[];applyAll()})})},
+  error:fail})}catch(e){fail()}
+ timer=setTimeout(fail,30000);applyAll()}
+$('prev').onclick=()=>{S.c=(S.c+2)%3;load()};$('next').onclick=()=>{S.c=(S.c+1)%3;load()};$('retry').onclick=()=>load(false);$('altB').onclick=()=>load(!curAlt);
+$('drlB').onclick=()=>{S.drl=!S.drl;document.querySelectorAll('.drl').forEach(d=>d.classList.toggle('on',S.drl));$('drlB').classList.toggle('on',S.drl)};
+
+let ac;
+$('rev').onclick=()=>{ac=ac||new(window.AudioContext||window.webkitAudioContext)();ac.resume();const t0=ac.currentTime,T=CARS[S.c].t;
+ const P={V10:{b:62,pk:430,w:'sawtooth',lp:1800,d:2.4,h:[1,2,3.01,4.99]},V12:{b:48,pk:520,w:'sawtooth',lp:2600,d:2.8,h:[1,2,3,4,6]},V16:{b:38,pk:380,w:'sawtooth',lp:1400,d:3.4,h:[1,1.5,2,3]}}[T];
+ const out=ac.createGain(),f=ac.createBiquadFilter();f.type='lowpass';f.Q.value=4;f.frequency.setValueAtTime(300,t0);f.frequency.exponentialRampToValueAtTime(P.lp,t0+P.d*.7);f.frequency.exponentialRampToValueAtTime(400,t0+P.d+.8);
+ out.gain.setValueAtTime(.001,t0);out.gain.exponentialRampToValueAtTime(.35,t0+.15);out.gain.setValueAtTime(.35,t0+P.d);out.gain.exponentialRampToValueAtTime(.001,t0+P.d+1);
+ f.connect(out);out.connect(ac.destination);
+ P.h.forEach((m,i)=>{const o=ac.createOscillator(),g=ac.createGain();o.type=i%2?'square':P.w;o.detune.value=(i-2)*6;
+  o.frequency.setValueAtTime(P.b*m,t0);o.frequency.exponentialRampToValueAtTime(P.pk*m*.5,t0+P.d*.7);o.frequency.exponentialRampToValueAtTime(P.b*m*1.4,t0+P.d+.8);
+  g.gain.value=.5/(i+1);o.connect(g);g.connect(f);o.start(t0);o.stop(t0+P.d+1.1)});
+ const lfo=ac.createOscillator(),lg=ac.createGain();lfo.frequency.value=T==='V16'?26:T==='V12'?34:22;lg.gain.value=.12;lfo.connect(lg);lg.connect(out.gain);lfo.start(t0);lfo.stop(t0+P.d+1.1);
+ if(T==='V16'){const w=ac.createOscillator(),wg=ac.createGain();w.type='sine';w.frequency.setValueAtTime(900,t0);w.frequency.exponentialRampToValueAtTime(4200,t0+P.d);wg.gain.setValueAtTime(.001,t0);wg.gain.exponentialRampToValueAtTime(.05,t0+P.d*.8);wg.gain.exponentialRampToValueAtTime(.001,t0+P.d+.8);w.connect(wg);wg.connect(ac.destination);w.start(t0);w.stop(t0+P.d+1)}};
+
+const carOpts=CARS.map((c,i)=>`<option value="${i}">${c.n}</option>`).join('');
+['fCar','bCar'].forEach(i=>$(i).innerHTML=carOpts);
+$('cat').innerHTML=CARS.map((c,i)=>`<article class="card overflow-hidden"><div class="aspect-[16/10] bg-gradient-to-br from-zinc-800 to-black flex items-center justify-center"><img id="th${i}" alt="${c.n}" class="w-full h-full object-cover hidden"><span id="ph${i}" class="font-serif text-gold text-xl px-4 text-center">${c.n}</span></div><div class="p-4"><h3 class="font-serif text-xl">${c.n}</h3><p class="text-xs text-zinc-400">${c.eng} · ${c.cv} cv · ${c.z}</p><p class="text-gold text-lg mt-2">${fmt(c.p)}</p><button class="btn mt-3 w-full" onclick="S.c=${i};load();location.hash='estudio'">Ver no estúdio 3D</button></div></article>`).join('');
+CARS.forEach((c,i)=>fetch('https://sketchfab.com/oembed?url='+encodeURIComponent('https://sketchfab.com/models/'+c.uid)).then(r=>r.json()).then(j=>{if(j.thumbnail_url){const im=$('th'+i);im.src=j.thumbnail_url;im.onload=()=>{im.classList.remove('hidden');$('ph'+i).classList.add('hidden')}}}).catch(()=>{}));
+
+const rows=[['Motor','eng'],['Potência','cv',v=>v+' cv'],['Torque','tq'],['0-100 km/h','z'],['Velocidade máxima','v',v=>v+' km/h'],['Tração','tr'],['Preço de referência','p',fmt]];
+$('cmp').innerHTML='<tr class="border-b border-white/10 text-gold font-serif text-lg"><th class="p-3 text-left"></th>'+CARS.map(c=>`<th class="p-3 text-left">${c.n}</th>`).join('')+'</tr>'+rows.map(r=>`<tr class="border-b border-white/5"><td class="p-3 text-zinc-400">${r[0]}</td>`+CARS.map(c=>`<td class="p-3">${r[2]?r[2](c[r[1]]):c[r[1]]}</td>`).join('')+'</tr>').join('');
+
+function fin(){const c=CARS[$('fCar').value],e=+$('fEnt').value,n=+$('fN').value,i=.0135,ent=c.p*e/100,P=c.p-ent,pm=P*i/(1-Math.pow(1+i,-n));
+ $('fEv').textContent=e+'% ('+fmt(ent)+')';
+ $('fOut').innerHTML=`<div class="text-sm text-zinc-400">Parcela mensal</div><div class="text-4xl font-serif text-gold">${fmt(pm)}</div><div class="text-sm text-zinc-400 pt-3">Valor financiado: ${fmt(P)}</div><div class="text-sm text-zinc-400">Total pago em ${n}x: ${fmt(pm*n)}</div><div class="text-sm text-zinc-400">Custo total com entrada: ${fmt(pm*n+ent)}</div>`}
+['fCar','fEnt','fN'].forEach(i=>$(i).oninput=fin);fin();
+
+const SV={'Revisão Periódica':4800,'Troca de Discos Cerâmicos':52000,'Diagnóstico de Telemetria':2400,'Detailing & PPF':38000};
+const ENG=['Eng. Rafael Monteiro (Powertrain)','Eng.ª Carla Bittencourt (Telemetria)','Eng. Henrique Valadão (Chassis e freios)','Eng.ª Marina Albuquerque (Detailing)'];
+$('bSv').innerHTML=Object.keys(SV).map(s=>`<option>${s}</option>`).join('');$('bEng').innerHTML=ENG.map(s=>`<option>${s}</option>`).join('');
+$('bTm').innerHTML=['09:00','10:00','11:00','13:00','14:00','15:00','16:00','17:00'].map(s=>`<option>${s}</option>`).join('');
+$('bDt').min=new Date().toISOString().slice(0,10);$('bDt').value=$('bDt').min;
+const est=()=>SV[$('bSv').value]*CARS[$('bCar').value].m;
+const upd=()=>$('bPr').textContent=fmt(est());['bCar','bSv'].forEach(i=>$(i).onchange=upd);upd();
+$('bGo').onclick=()=>{if(!$('bNm').value.trim()||!$('bDt').value){$('bOut').innerHTML='<span class="text-red-400">Informe seu nome e a data para confirmar.</span>';return}
+ const d=$('bDt').value.split('-').reverse().join('/');
+ $('bOut').innerHTML=`<div class="text-left w-full text-zinc-200 space-y-1"><div class="text-gold font-serif text-2xl mb-2">Agendamento confirmado</div><div>Protocolo: <b>APX-${Date.now().toString(36).toUpperCase()}</b></div><div>Cliente: ${$('bNm').value}</div><div>Veículo: ${CARS[$('bCar').value].n}</div><div>Serviço: ${$('bSv').value}</div><div>Consultor: ${$('bEng').value}</div><div>Data: ${d} às ${$('bTm').value}</div><div>Local: Av. Europa, 850, São Paulo</div><div class="text-gold text-lg pt-2">Valor estimado: ${fmt(est())}</div></div>`};
+
+function extras(){let e=0;if(S.paint==='Oro 24k')e+=120000;if(S.uph==='Alcantara')e+=22000;if(S.tint==='G5')e+=3500;if(S.cal!=='Vermelho')e+=4500;return e}
+function openPf(){const c=CARS[S.c],x=extras(),r=(a,b)=>`<tr><td style="padding:6px;border-bottom:1px solid #ccc">${a}</td><td style="padding:6px;border-bottom:1px solid #ccc;text-align:right">${b}</td></tr>`;
+ $('pfDoc').innerHTML=`<h2 style="font-family:Georgia,serif;font-size:26px;color:#8a6d1c">Apex Luxury Dynamics</h2><div style="font-size:12px">Av. Europa, 850, São Paulo · Ficha Pro Forma nº APX-${Date.now().toString(36).toUpperCase()} · ${new Date().toLocaleDateString('pt-BR')}</div><table style="width:100%;margin-top:14px;font-size:14px;border-collapse:collapse">${r('Veículo',c.n)}${r('Motor',c.eng+' · '+c.cv+' cv')}${r('Pintura',S.paint)}${r('Insulfilm',S.tint)}${r('Estofamento',S.uph+' · '+S.uc)}${r('Pinças Brembo',S.cal)}${r('Iluminação do estúdio',S.lit)}${r('Faróis DRL',S.drl?'Ligados':'Desligados')}${r('Preço base',fmt(c.p))}${r('Opcionais',fmt(x))}${r('<b>Total estimado</b>','<b>'+fmt(c.p+x)+'</b>')}</table><p style="font-size:11px;margin-top:12px">Documento ilustrativo e sem valor fiscal. Validade de 7 dias, sujeito à disponibilidade e análise comercial.</p>`;$('pf').showModal()}
+['pfBtn','pfBtn2'].forEach(i=>$(i).onclick=openPf);
+
+const H=async p=>crypto.subtle?[...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(p)))].map(b=>b.toString(16).padStart(2,'0')).join(''):btoa(p);
+const ls={get:k=>{try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},set:(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+let mode='lg';
+function vipView(){const u=ls.get('apx_sess');$('vipMsg').textContent='';
+ if(u){$('vipBody').innerHTML=`<p>Olá, <b class="text-gold">${u}</b>. Você está conectado à sua conta VIP.</p><button class="btn" id="out">Sair</button>`;$('out').onclick=()=>{ls.set('apx_sess',null);vipView();vb()};return}
+ $('vipBody').innerHTML=(mode==='sg'?'<div><label>Nome</label><input id="vn"></div>':'')+'<div><label>E-mail</label><input id="ve" type="email"></div><div><label>Senha</label><input id="vp" type="password"></div><button class="btn w-full" id="vg">'+(mode==='sg'?'Criar conta':'Entrar')+'</button>';
+ $('tLg').classList.toggle('on',mode==='lg');$('tSg').classList.toggle('on',mode==='sg');
+ $('vg').onclick=async()=>{const e=$('ve').value.trim().toLowerCase(),p=$('vp').value,us=ls.get('apx_users')||{};
+  if(!e||p.length<6){$('vipMsg').textContent='Informe um e-mail e uma senha de pelo menos 6 caracteres.';return}
+  const h=await H(p);
+  if(mode==='sg'){const n=$('vn').value.trim();if(!n){$('vipMsg').textContent='Informe seu nome.';return}if(us[e]){$('vipMsg').textContent='Este e-mail já tem conta. Use Entrar.';return}us[e]={n,h};ls.set('apx_users',us);ls.set('apx_sess',n)}
+  else{if(!us[e]||us[e].h!==h){$('vipMsg').textContent='E-mail ou senha incorretos.';return}ls.set('apx_sess',us[e].n)}
+  vipView();vb()}}
+const vb=()=>$('vipBtn').textContent=ls.get('apx_sess')?'VIP: '+ls.get('apx_sess').split(' ')[0]:'Minha Conta VIP';
+$('vipBtn').onclick=()=>{vipView();$('vip').showModal()};$('tLg').onclick=()=>{mode='lg';vipView()};$('tSg').onclick=()=>{mode='sg';vipView()};vb();
+
+const norm=s=>s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+function ans(q){const s=norm(q),ix=/ferrari|purosangue/.test(s)?0:/bugatti|tourbillon/.test(s)?1:/audi|r8/.test(s)?2:-1,L=ix<0?CARS:[CARS[ix]];
+ const per=f=>L.map(c=>c.n+': '+f(c)).join('\n');
+ if(/financ|parcel|entrada|juros|credito/.test(s))return'Financiamos em 12x, 24x, 36x ou 48x com entrada a partir de 10%, taxa de referência de 1,35% a.m. Use a calculadora Private Banking nesta página para simular a parcela.';
+ if(/revis|manuten|agend|oficina|servico|detailing|ppf|disco/.test(s))return'Agendamos Revisão Periódica, Troca de Discos Cerâmicos, Diagnóstico de Telemetria e Detailing & PPF na Av. Europa, 850. Use o módulo Revisão VIP para escolher engenheiro, data e horário e ver o valor estimado.';
+ if(/onde|local|endereco|europa|chegar|fica/.test(s))return'Estamos na Av. Europa, 850, Jardim Europa, São Paulo. Há manobrista e estacionamento para clientes.';
+ if(/horario|aberto|funciona|abre|fecha/.test(s))return'Atendemos de segunda a sábado, das 9h às 19h. Visitas fora desse horário podem ser combinadas com um consultor.';
+ if(/0.?100|acelera|segundos/.test(s))return per(c=>'0-100 km/h em '+c.z);
+ if(/potencia|cavalos|\bcv\b|\bhp\b|torque/.test(s))return per(c=>c.cv+' cv, torque '+c.tq);
+ if(/velocidade|vmax|maxima|km\/h/.test(s))return per(c=>c.v+' km/h de velocidade máxima');
+ if(/preco|valor|quanto|custa|custo/.test(s))return per(c=>fmt(c.p))+'\nValores de referência, sujeitos à confirmação.';
+ if(/ficha|especif|motor|tecnic|tracao/.test(s))return per(c=>`${c.eng}, ${c.cv} cv, ${c.tq}, 0-100 em ${c.z}, máx. ${c.v} km/h, ${c.tr}`);
+ if(/compar|melhor|diferen|rapido|potente/.test(s))return'Em números: o Bugatti Tourbillon lidera em potência (1.800 cv) e velocidade (445 km/h). A Ferrari Purosangue une V12 e uso diário com 4 portas. O Audi R8 é o mais acessível, com V10 e 0-100 em 3,1 s. Veja a tabela comparativa na página.';
+ if(/pagamento|troca|seguro|garantia|entrega/.test(s))return'Aceitamos financiamento, pagamento à vista e veículo na troca com avaliação. Um consultor detalha seguro, garantia e prazos de entrega na visita.';
+ if(/cor|pintura|personaliz|customiz|insulfilm|freio|pinca/.test(s))return'No estúdio 3D você escolhe pintura (Rosso Corsa, Nero Daytona, Giallo Modena, Oro 24k), insulfilm G70/G20/G5, estofamento, pinças Brembo, iluminação e faróis DRL. Depois gere a Ficha Pro Forma.';
+ if(ix>=0)return per(c=>`${c.eng}, ${c.cv} cv, 0-100 em ${c.z}, máx. ${c.v} km/h, ${fmt(c.p)}`);
+ if(/ola|oi\b|bom dia|boa tarde|boa noite/.test(s))return'Olá! Posso ajudar com preços, fichas técnicas, financiamento, localização e revisões. O que você quer saber?';
+ return'Não encontrei essa informação. Posso responder sobre preços, desempenho, financiamento, localização, horários e agendamento de revisões. Para outros assuntos, fale com um consultor na Av. Europa, 850.'}
+const add=(t,w)=>{const d=document.createElement('div');d.className='msg '+w;d.textContent=t;$('msgs').appendChild(d);$('msgs').scrollTop=1e5};
+function ask(q){q=q.trim();if(!q)return;add(q,'me');setTimeout(()=>add(ans(q),'bot'),350)}
+['Quanto custa a Ferrari?','0-100 km/h do Bugatti','Potência do Audi R8','Onde fica a loja?','Como financiar?','Agendar revisão','Qual o mais rápido?'].forEach(q=>{const b=document.createElement('button');b.className='chip shrink-0';b.textContent=q;b.onclick=()=>ask(q);$('pills').appendChild(b)});
+add('Olá! Sou o concierge da Apex. Pergunte sobre preços, fichas técnicas, financiamento, localização ou revisões.','bot');
+$('chatBtn').onclick=()=>{const c=$('chat');c.classList.toggle('hidden');c.classList.toggle('flex')};
+$('csend').onclick=()=>{ask($('cin').value);$('cin').value=''};$('cin').onkeydown=e=>{if(e.key==='Enter'){ask($('cin').value);$('cin').value=''}};
+load();
+</script>
+</body>
+</html>
